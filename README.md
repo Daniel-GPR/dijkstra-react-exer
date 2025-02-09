@@ -19,6 +19,13 @@ for Windows:
 5. login to github with `gh auth login`
 6. clone the project with `git clone https://github.com/Daniel-GPR/dijkstra-react-exer.git`
 
+### Install some VS Code extensions
+
+- Recommended theme: [Darcula](https://marketplace.visualstudio.com/items?itemName=trinm1709.dracula-theme-from-intellij)
+- JS/React syntax: [ES7+](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
+- [Prettier code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [Icon theme](https://marketplace.visualstudio.com/items?itemName=tal7aouy.icons) that I prefer
+
 # How to run
 
 1. Make sure you have npm installed locally and configured (Highly recommended, use [`nvm`](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/) (node version manager) to install npm)
