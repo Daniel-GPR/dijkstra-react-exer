@@ -2,6 +2,23 @@
 
 Exercise Project for dijkstra's algo
 
+# prerequisites
+
+for Windows:
+
+1. install [choco](https://chocolatey.org/install)
+2. Install git with choco by running `choco install git.install`
+3. Install gh with choco `choco install gh`
+4. Install and use nvm:
+
+   - Install nvm with choco `choco install nvm`
+   - run `nvm install v20.11.0`to download node
+   - run `nvm use v20.11.0` to set node
+   - run `node -v` and then `npm -v` make sure both commands output a version number
+
+5. login to github with `gh auth login`
+6. clone the project with `git clone https://github.com/Daniel-GPR/dijkstra-react-exer.git`
+
 # How to run
 
 1. Make sure you have npm installed locally and configured (Highly recommended, use [`nvm`](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/) (node version manager) to install npm)
