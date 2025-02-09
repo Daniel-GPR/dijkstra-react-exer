@@ -27,6 +27,15 @@ for Windows:
 4. run `npm run dev` to run in dev mode locally, click the link in the terminal and you should see the page on your browser
 5. Highly recommended
 
+# Make sure to create your own branch off of main before commiting code:
+
+1. `git checkout -b chris` - creates a branch off of main with branch name "chris" (use your name as branch name). The parameter `-b` speciies that this is a new branch, so it creates a new branch of the specified name.
+
+Other git commands:
+
+- `git pull` pulls latest updates and branches from origin/remote
+- DO NOT FUCKING COMMIT DIRECTLY TO MAIN. BEFORE COMMITING MAKE SURE TO RUN `git branch`, output should not be main, but your branch name.
+
 # Stack
 
 This Project uses React and Typescript with Vite stack to create a SPA (Single Page Application). Vite is a relatively new and very fast bundler that supports hot refresh for complex projects, and uses caching (both local and cloud) to improve build time.
