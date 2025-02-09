@@ -18,6 +18,9 @@ for Windows:
 
 5. login to github with `gh auth login`
 6. clone the project with `git clone https://github.com/Daniel-GPR/dijkstra-react-exer.git`
+7. set up git:
+   - `git config --global user.name "your github username"`use your githib account username
+   - `git config --global user.email "myemail@example.com"` use your githib account email
 
 ### Install some VS Code extensions
 
