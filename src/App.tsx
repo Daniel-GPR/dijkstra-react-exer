@@ -1,7 +1,9 @@
-import { Canvas } from "./components/Canvas";
-
 function App() {
-  return null;
+  return (
+    <div>
+      <h1>YO MAMA</h1>
+    </div>
+  );
 }
 
 export default App;
