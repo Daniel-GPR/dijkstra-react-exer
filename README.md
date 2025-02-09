@@ -39,6 +39,8 @@ for Windows:
 
 # Make sure to create your own branch off of main before commiting code:
 
+
+jhgvhjvvvhvjvhjvhvhj
 1. `git checkout -b chris` - creates a branch off of main with branch name "chris" (use your name as branch name). The parameter `-b` speciies that this is a new branch, so it creates a new branch of the specified name.
 
 Other git commands:
