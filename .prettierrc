@@ -1,0 +1,8 @@
+{
+  "jsxSingleQuote": false,
+  "semi": true,
+  "singleQuote": false,
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
