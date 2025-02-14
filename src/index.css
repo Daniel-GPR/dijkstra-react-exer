@@ -14,11 +14,21 @@
 }
 
 #root {
-  /* root element */
+  background-color: aquamarine;
+  width: 100%;
+  height: 100%;
+}
+
+.malakia-class{
+  color: khaki
+
 }
 
 body {
-  /* body element */
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(175, 98, 138, 0.736);
 }
 
 /* 
