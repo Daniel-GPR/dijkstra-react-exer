@@ -1,5 +1,6 @@
 import { style } from "typestyle";
 import { Position } from "../models/Position";
+import { BoxShadowStyles } from "../styles";
 
 export interface CannonballProps {
   color: string;
@@ -15,8 +16,9 @@ export function Cannonball(props: CannonballProps) {
       height: props.size,
       position: "absolute",
       borderRadius: "50%",
-      top: props.position.y,
+      bottom: props.position.y,
       left: props.position.x,
+      boxShadow: BoxShadowStyles.offset,
     }),
   };
   return <div className={styles.cannonball} />;
