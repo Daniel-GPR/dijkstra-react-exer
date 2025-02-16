@@ -1,61 +1,131 @@
 import { style } from "typestyle";
 import { StandardColors } from "../styles";
-import { Cannonball } from "./Cannonball";
-import { runUpdate } from "../utils/timeutils";
-import { useEffect, useState } from "react";
+import { Cannonball, CannonballProps } from "./Cannonball";
+import { use, useEffect, useState } from "react";
 import { Position } from "../models";
+import { Button, Input } from "reactstrap";
 
 export function Canvas() {
-  const [position, setPosition] = useState<Position>({ x: 435, y: 120 });
   const [runSim, setRunSim] = useState<boolean>(false);
-  const [currentVelocity, setCurrentVelocity] = useState<number>(20);
+  const [initVel, setinitVel] = useState<number>(30);
+  const [cannonProps, setCannonProps] = useState<CannonballProps[]>([
+    {
+      color: StandardColors.ColorBlue10,
+      size: 30,
+      position: { x: 435, y: 120 },
+    },
+  ]);
+  const [vel, setVel] = useState<number>(initVel);
 
-  const fps = 30;
+  const fps = 60;
   const ms = 1000 / fps;
-  const g = 10;
-  const aero = 0.4;
+  const g = 9.81;
+  // const cd = 0.04;
+  const [time, setTime] = useState<number>(0);
 
   useEffect(() => {
     if (runSim) {
-      const interval = setInterval(() => {
-        CanoniPhysics();
+      const interval = setTimeout(() => {
+        setTime(time + ms);
+        CanoniPhysics(time);
       }, ms);
-
-      return () => clearInterval(interval);
     }
-  }, [runSim, currentVelocity]);
+  }, [runSim, time]);
 
-  useEffect(() => {
-    let vel = 0;
-    if (currentVelocity - aero > 0) {
-      vel = currentVelocity - aero;
-    } else vel = 0;
-    setCurrentVelocity(vel);
-  }, [position]);
+  function CanoniPhysics(time: number) {
+    let { position, color, size } = cannonProps[cannonProps.length - 1];
 
-  function CanoniPhysics() {
-    position.x = position.x + currentVelocity;
-    position.y = position.y + g;
+    const cd = size / 1000;
 
-    setPosition({ ...position });
+    setVel(vel * (1 - cd));
+
+    position.x = position.x + (vel * time) / 1000;
+    position.y = position.y + 0.5 * ((g * time) / 1000) ** 2;
+
+    const colorNum = 10 * Math.trunc((10 * position.y) / window.innerHeight);
+    color =
+      StandardColors[("ColorBlue" + colorNum) as keyof typeof StandardColors];
+
+    const hasHitFloor = position.y + size >= window.innerHeight;
+
+    if (hasHitFloor) {
+      position.y = window.innerHeight - size;
+      setRunSim(false);
+    }
+    if (position.x + size >= window.innerWidth) {
+      position.x = window.innerWidth - size;
+    }
+
+    cannonProps[cannonProps.length - 1].position = position;
+    cannonProps[cannonProps.length - 1].color = color;
+
+    if (hasHitFloor) {
+      setCannonProps([
+        ...cannonProps,
+        {
+          color: StandardColors.ColorBlue10,
+          size: 30,
+          position: { x: 435, y: 120 },
+        },
+      ]);
+      setTime(0);
+      setVel(initVel);
+    } else {
+      setCannonProps([...cannonProps]);
+    }
   }
-
   return (
     <div className={styles.container}>
-      <button onClick={() => setRunSim(!runSim)}>KANONI</button>
+      <div className={styles.inputsContainer}>
+        <h1 className={styles.headers}>
+          {" "}
+          <center>Size</center>{" "}
+        </h1>
+        <Input
+          type="range"
+          name="range"
+          min="20"
+          max="80"
+          onChange={(event) => {
+            cannonProps[cannonProps.length - 1].size = parseInt(
+              event.target.value,
+            );
+            setCannonProps([...cannonProps]);
+          }}
+        />
+        <h1 className={styles.headers}>
+          {" "}
+          <center>Speed</center>{" "}
+        </h1>
+        <Input
+          type="range"
+          name="range"
+          min="10"
+          max="400"
+          onChange={(event) => {
+            setinitVel(parseInt(event.target.value));
+          }}
+        />
+        <Button
+          color="primary"
+          className={styles.button}
+          onClick={() => {
+            setRunSim(!runSim);
+          }}
+        >
+          LAUNCH
+        </Button>
+      </div>
+
       <img className={styles.image} src="s-l400-removebg-preview.png" />
-      <Cannonball
-        color={StandardColors.ColorBlack}
-        size={50}
-        position={position}
-      />
+      {cannonProps && cannonProps.map((element) => <Cannonball {...element} />)}
     </div>
   );
 }
 
 const styles = {
   container: style({
-    backgroundColor: StandardColors.ColorGreen70,
+    backgroundColor: StandardColors.ColorGreen20,
     width: "100%",
     height: "100%",
     color: StandardColors.ColorBlue90,
@@ -73,4 +143,36 @@ const styles = {
     top: 50,
     right: 50,
   }),
+  button: style({
+    padding: 10,
+    position: "relative",
+    fontSize: 30,
+    color: `${StandardColors.ColorPink90} !important`,
+  }),
+  input: style({
+    padding: 15,
+    position: "relative",
+    fontSize: 20,
+    color: `${StandardColors.ColorPink70} !important`,
+  }),
+  inputsContainer: style({
+    rowGap: 15,
+    padding: 20,
+    position: "absolute",
+    top: "15%",
+    left: "2%",
+    fontSize: 20,
+    backgroundColor: StandardColors.ColorInk20,
+    color: `${StandardColors.ColorPink70} !important`,
+    display: "flex",
+    flexDirection: "column",
+  }),
+  headers: style({
+    color: StandardColors.ColorBlue20,
+    border: StandardColors.ColorBlue40,
+    textShadow: "0 0 15px #FF0000, 0 0 15px rgb(104, 158, 108)",
+  }),
 };
+function getElementsByTagName(arg0: string) {
+  throw new Error("Function not implemented.");
+}
