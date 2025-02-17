@@ -17,3 +17,7 @@ export function scaleVector(v: Vector, multiplier: number): Vector {
 export function divideVector(v: Vector, divider: number): Vector {
   return scaleVector(v, 1 / divider);
 }
+
+export function isZeroVector(v: Vector) {
+  return v.x == 0 && v.y == 0;
+}

@@ -2,6 +2,8 @@ import { createContext, useContext, useState } from "react";
 import { Position, Vector } from "../models";
 import { CannonMaster } from "../models/CannonContext";
 import { generateUuid } from "../utils";
+import * as _ from "lodash";
+
 import { StandardColors } from "../styles";
 
 export interface ControlDataContext {
@@ -34,22 +36,24 @@ export function ControlProvider(props: { children: React.ReactNode }) {
   const [position, setPosition] = useState<Position>({ x: 30, y: 30 });
   const [velocity, setVelocity] = useState<Vector>({ x: 60, y: 50 });
   const [mass, setMass] = useState<number>(1);
-  const [elasticity, setElasticity] = useState<number>(0.6);
+  const [elasticity, setElasticity] = useState<number>(0.75);
   const [size, setSize] = useState<number>(20);
   const [cannonMaster, setCannonMaster] = useState<CannonMaster>(
     new CannonMaster({ fps: 60 }),
   );
 
   function addCannon() {
-    cannonMaster.createCannonBall({
+    const cannonBall = {
       ...cannonMaster.defaultCannon,
       id: generateUuid(),
       size: size,
       position,
       velocity,
-      mass: mass,
-      elasticity: elasticity,
-    });
+      mass: (size * Math.PI * Math.pow(size / 2, 2)) / 1000,
+      elasticity,
+    };
+    console.log(cannonBall);
+    cannonMaster.createCannonBall(_.cloneDeep(cannonBall));
   }
 
   return (

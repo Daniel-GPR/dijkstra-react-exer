@@ -1,7 +1,7 @@
 import { CannonBallProps } from "../components/CannonBall";
 import { StandardColors } from "../styles";
 import { generateUuid } from "../utils";
-import { addVectors, divideVector, scaleVector } from "../utils/PhysicsUtils";
+import { addVectors, divideVector, isZeroVector } from "../utils/PhysicsUtils";
 import { Vector } from "./Vector";
 
 enum CollisionPlane {
@@ -17,11 +17,13 @@ interface CannonContextProps {
 
 export class CannonMaster {
   gravity: Vector = { x: 0, y: -980 };
-  floorFriction: number = 2;
+  floorFriction: number = 5;
   cannonInstances: CannonBallProps[] = [];
   fps: number = 60;
   updateTickRate: number = 1000 / this.fps;
   constantWorldForces: Vector[] = [this.gravity];
+
+  static velocityThreshold = 100;
 
   defaultCannon: CannonBallProps = {
     id: generateUuid(),
@@ -30,7 +32,7 @@ export class CannonMaster {
     position: { y: 100, x: 100 },
     velocity: { y: 700, x: -400 },
     mass: 2,
-    elasticity: 0.8, // between 0-1 with 1 being fully elastic
+    elasticity: 0.4, // between 0-1 with 1 being fully elastic
   };
 
   constructor(props: CannonContextProps) {
@@ -45,7 +47,16 @@ export class CannonMaster {
   }
 
   updateAllCannonValues(): void {
-    this.cannonInstances.forEach((inst) => this.updateCannonValues(inst));
+    this.cannonInstances.forEach((inst) => {
+      if (this.isStationary(inst)) {
+        return; // don't update if object is stationary
+      }
+      this.updateCannonValues(inst);
+    });
+  }
+
+  isStationary(cannon: CannonBallProps) {
+    return isZeroVector(cannon.velocity);
   }
 
   normalizeForceVector(v: Vector): Vector {
@@ -115,6 +126,12 @@ export class CannonMaster {
         cannonBall,
       );
 
+      if (
+        cannonBall.position.y == this.getCannonRadius(cannonBall) &&
+        cannonBall.velocity.y < CannonMaster.velocityThreshold
+      ) {
+        cannonBall.velocity.y = 0;
+      }
       // need to apply this, so that ball doesn't keep rolling indefinitely
       this.updateForRollVelocity(cannonBall);
     }
@@ -138,7 +155,7 @@ export class CannonMaster {
   updateForRollVelocity(cannonBall: CannonBallProps): void {
     cannonBall.velocity.x = Math.max(
       0,
-      cannonBall.velocity.x - cannonBall.mass * this.floorFriction,
+      cannonBall.velocity.x - this.floorFriction,
     );
   }
 
@@ -152,10 +169,13 @@ export class CannonMaster {
       this.getCannonRadius(cannonBall) + cannonBall.position.y
     ) {
       collisionPlanes.push(CollisionPlane.Top);
+      cannonBall.position.y =
+        window.innerHeight - this.getCannonRadius(cannonBall);
     }
 
     if (cannonBall.position.y - this.getCannonRadius(cannonBall) <= 0) {
       collisionPlanes.push(CollisionPlane.Bottom);
+      cannonBall.position.y = this.getCannonRadius(cannonBall);
     }
 
     if (
@@ -163,9 +183,12 @@ export class CannonMaster {
       this.getCannonRadius(cannonBall) + cannonBall.position.x
     ) {
       collisionPlanes.push(CollisionPlane.Right);
+      cannonBall.position.x =
+        window.innerWidth - this.getCannonRadius(cannonBall);
     }
     if (cannonBall.position.x - this.getCannonRadius(cannonBall) <= 0) {
       collisionPlanes.push(CollisionPlane.Left);
+      cannonBall.position.x = this.getCannonRadius(cannonBall);
     }
 
     return collisionPlanes;

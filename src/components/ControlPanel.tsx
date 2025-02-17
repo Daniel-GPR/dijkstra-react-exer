@@ -14,6 +14,8 @@ export function ControlPanel() {
     size,
     addCannon,
     setSize,
+    elasticity,
+    setElasticity,
   } = useControl();
 
   return (
@@ -47,6 +49,16 @@ export function ControlPanel() {
         min={4}
         max={100}
         onChange={(e) => setSize(parseInt(e.target.value))}
+      />
+
+      <h2>Elasticity</h2>
+      <Input
+        value={elasticity}
+        type="range"
+        min={0.1}
+        step={0.1}
+        max={1}
+        onChange={(e) => setElasticity(parseFloat(e.target.value))}
       />
     </div>
   );
