@@ -1,8 +1,11 @@
+import { Canvas } from "./components/Canvas";
+import { ControlProvider } from "./Services/ControlDataContext";
+
 function App() {
   return (
-    <div>
-      <h1>YO MAMA</h1>
-    </div>
+    <ControlProvider>
+      <Canvas />
+    </ControlProvider>
   );
 }
 
