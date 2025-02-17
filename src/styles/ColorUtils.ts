@@ -1,3 +1,5 @@
+import { pickRandom, randomIntFromInterval } from "../utils";
+
 function hex2(c: number) {
   c = Math.round(c);
   if (c < 0) c = 0;
@@ -31,4 +33,18 @@ export function shadeColor(color: string, light: number) {
   }
 
   return hexColor(r, g, b);
+}
+
+export function randColorFromPallete(
+  palette: string[],
+  randThreshold?: number, // value between 0-100
+) {
+  const col = pickRandom(palette);
+  if (!randThreshold) {
+    return col;
+  }
+  const modifierScaler =
+    randomIntFromInterval(-randThreshold, randThreshold) / 100;
+
+  return shadeColor(col, modifierScaler);
 }

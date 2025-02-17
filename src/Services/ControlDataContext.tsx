@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from "react";
 import { Position, Vector } from "../models";
 import { CannonMaster } from "../models/CannonContext";
-import { generateUuid } from "../utils";
+import { generateUuid, randomIntFromInterval } from "../utils";
 import * as _ from "lodash";
 
-import { StandardColors } from "../styles";
+import { PrimaryColors, randColorFromPallete, StandardColors } from "../styles";
 
 export interface ControlDataContext {
   isPaused: boolean;
@@ -39,16 +39,20 @@ export function ControlProvider(props: { children: React.ReactNode }) {
   const [elasticity, setElasticity] = useState<number>(0.75);
   const [size, setSize] = useState<number>(20);
   const [cannonMaster, setCannonMaster] = useState<CannonMaster>(
-    new CannonMaster({ fps: 60 }),
+    new CannonMaster({ fps: 40 }),
   );
 
   function addCannon() {
     const cannonBall = {
       ...cannonMaster.defaultCannon,
       id: generateUuid(),
+      color: randColorFromPallete(Object.values(PrimaryColors), 30),
       size: size,
       position,
-      velocity,
+      velocity: {
+        x: randomIntFromInterval(-200, 200),
+        y: randomIntFromInterval(0, 200),
+      },
       mass: (size * Math.PI * Math.pow(size / 2, 2)) / 1000,
       elasticity,
     };
