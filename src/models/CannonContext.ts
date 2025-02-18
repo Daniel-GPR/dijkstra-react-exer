@@ -23,7 +23,7 @@ export class CannonMaster {
   updateTickRate: number = 1000 / this.fps;
   constantWorldForces: Vector[] = [this.gravity];
 
-  static velocityThreshold = 100;
+  static velocityThreshold = 300;
 
   defaultCannon: CannonBallProps = {
     id: generateUuid(),
@@ -128,7 +128,8 @@ export class CannonMaster {
 
       if (
         cannonBall.position.y == this.getCannonRadius(cannonBall) &&
-        cannonBall.velocity.y < CannonMaster.velocityThreshold
+        cannonBall.velocity.y <
+          CannonMaster.velocityThreshold * cannonBall.elasticity
       ) {
         cannonBall.velocity.y = 0;
       }

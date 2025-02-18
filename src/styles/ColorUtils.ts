@@ -18,9 +18,9 @@ export function hexColor(r: number, g: number, b: number) {
 export function shadeColor(color: string, light: number) {
   // TODO: Assert that col is good and that -1 < light < 1
 
-  let r = parseInt(color.substring(1, 2), 16);
-  let g = parseInt(color.substring(3, 2), 16);
-  let b = parseInt(color.substring(5, 2), 16);
+  let r = parseInt(color.substr(1, 2), 16);
+  let g = parseInt(color.substr(3, 2), 16);
+  let b = parseInt(color.substr(5, 2), 16);
 
   if (light < 0) {
     r = (1 + light) * r;
