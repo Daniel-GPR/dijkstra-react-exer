@@ -2,7 +2,7 @@ import { style } from "typestyle";
 import { StandardColors } from "../styles";
 import { Cannonball } from "./Cannonball";
 import { useEffect, useState } from "react";
-import { Position } from "../models";
+import { Position, Vector } from "../models";
 import { Button, Input } from "reactstrap";
 import useMousePosition from "../hooks/UseMousePosition";
 import cannon from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/cannon.svg";
@@ -12,39 +12,50 @@ export function Canvas() {
   const angle = Math.atan(tan);
   const initial_position = { x: 50, y: 20 };
   const [position, setPosition] = useState<Position>(initial_position);
-
-  const fps = 144;
-  const [velocity, setVelocity] = useState(500); //  pixels/sec
-  const acceleration = 100; // pixels/sec^2
-  const [time, setTime] = useState(0);
+  const fps = 60;
+  const [initial_velocity, setInitial_velocity] = useState<Vector>({
+    x: 500,
+    y: 500,
+  });
+  const [velocity, setVelocity] = useState<Vector>({ ...initial_velocity }); //  pixels/sec
+  const acceleration: Vector = { x: 0, y: -100 }; // pixels/sec^2
+  const [size, setSize] = useState<number>(50);
+  // const [time, setTime] = useState(0);
+  const timestep = 1 / fps;
   const [runsim, setRunsim] = useState<boolean>(false);
 
   useEffect(() => {
-    window.addEventListener("click", reset);
+    // window.addEventListener("click", resetcannon);
+    // console.log("update");
 
     if (runsim == true) {
       const interval = setInterval(() => {
-        setPosition({
-          x: initial_position.x + velocity * time,
-          y:
-            initial_position.y +
-            velocity * time -
-            0.5 * acceleration * time ** 2,
+        setVelocity({
+          x: velocity.x + acceleration.x * timestep,
+          y: velocity.y + acceleration.y * timestep,
         });
-        setTime(time + 1 / fps);
+        setPosition({
+          x: position.x + velocity.x * timestep,
+          y: position.y + velocity.y * timestep,
+        });
+        // console.log(initial_velocity, velocity);
+        // setTime(time + 1 / fps);
       }, 1000 / fps);
       return () => {
         clearInterval(interval);
-        window.removeEventListener("click", reset);
+        // window.removeEventListener("click", resetcannon);
       };
     }
   });
 
-  function reset() {
+  function resetcannon() {
+    // console.log(initial_velocity);
+    setPosition({ ...initial_position });
+    setVelocity({ ...initial_velocity });
     setRunsim(true);
-    setPosition(initial_position);
-    setVelocity(velocity);
-    setTime(0);
+
+    // console.log("reset");
+    // setTime(0);
   }
 
   // const mouse = useMousePosition
@@ -52,17 +63,41 @@ export function Canvas() {
     <div className={styles.container}>
       <Input
         type="range"
-        className={styles.slider}
+        className={styles.slider1}
         max={1000}
         min={0}
-        onChange={(event) => setVelocity(parseInt(event.target.value))}
+        onChange={(event) =>
+          setInitial_velocity({
+            ...initial_velocity,
+            x: parseInt(event.target.value),
+          })
+        }
       />
-      <Button onClick={reset} className={styles.button}>
+      <Input
+        type="range"
+        className={styles.slider2}
+        max={1000}
+        min={0}
+        onChange={(event) =>
+          setInitial_velocity({
+            ...initial_velocity,
+            y: parseInt(event.target.value),
+          })
+        }
+      />
+      <Input
+        type="range"
+        className={styles.slider3}
+        max={200}
+        min={10}
+        onChange={(event) => setSize(parseInt(event.target.value))}
+      />
+      <Button onClick={resetcannon} className={styles.button}>
         SHOOT
       </Button>
       <Cannonball
         color={StandardColors.ColorPurple80}
-        size={50}
+        size={size}
         position={position}
       />
       <img
@@ -88,7 +123,7 @@ const styles = {
     color: StandardColors.ColorBlue80,
     position: "absolute",
   }),
-  slider: style({
+  slider1: style({
     backgroundColor: StandardColors.ColorBlack,
     width: "10%",
     height: "10%",
@@ -96,6 +131,26 @@ const styles = {
     position: "absolute",
     borderRadius: "20%",
     top: "15%",
+    left: "5%",
+  }),
+  slider2: style({
+    backgroundColor: StandardColors.ColorBlack,
+    width: "10%",
+    height: "10%",
+    color: StandardColors.ColorRed05,
+    position: "absolute",
+    borderRadius: "20%",
+    top: "25%",
+    left: "5%",
+  }),
+  slider3: style({
+    backgroundColor: StandardColors.ColorBlack,
+    width: "10%",
+    height: "10%",
+    color: StandardColors.ColorRed05,
+    position: "absolute",
+    borderRadius: "20%",
+    top: "35%",
     left: "5%",
   }),
   button: style({
