@@ -4,10 +4,11 @@ import { Cannonball, CannonballProps } from "./Cannonball";
 import { use, useEffect, useState } from "react";
 import { Position } from "../models";
 import { Button, Input } from "reactstrap";
+import useMousePosition from "../hooks/UseMousePosition";
 
 export function Canvas() {
   const [runSim, setRunSim] = useState<boolean>(false);
-  const [initVel, setinitVel] = useState<number>(30);
+  const [initVel, setinitVel] = useState<[number, number]>([0, 0]);
   const [cannonProps, setCannonProps] = useState<CannonballProps[]>([
     {
       color: StandardColors.ColorBlue10,
@@ -15,7 +16,7 @@ export function Canvas() {
       position: { x: 435, y: 120 },
     },
   ]);
-  const [vel, setVel] = useState<number>(initVel);
+  const [vel, setVel] = useState<[number, number]>(initVel);
 
   const fps = 60;
   const ms = 1000 / fps;
@@ -37,10 +38,11 @@ export function Canvas() {
 
     const cd = size / 1000;
 
-    setVel(vel * (1 - cd));
+    setVel([vel[0] * (1 - cd), vel[1] * (1 - cd)]);
 
-    position.x = position.x + (vel * time) / 1000;
-    position.y = position.y + 0.5 * ((g * time) / 1000) ** 2;
+    position.x = position.x + (vel[0] * time) / 1000;
+    position.y =
+      position.y + +(vel[1] * time) / 1000 + 0.5 * g * (time / 1000) ** 2;
 
     const colorNum = 10 * Math.trunc((10 * position.y) / window.innerHeight);
     color =
@@ -79,7 +81,7 @@ export function Canvas() {
       <div className={styles.inputsContainer}>
         <h1 className={styles.headers}>
           {" "}
-          <center>Size</center>{" "}
+          <center>PP size</center>{" "}
         </h1>
         <Input
           type="range"
@@ -95,13 +97,13 @@ export function Canvas() {
         />
         <h1 className={styles.headers}>
           {" "}
-          <center>Speed</center>{" "}
+          <center>Taxhthta</center>{" "}
         </h1>
         <Input
           type="range"
           name="range"
           min="10"
-          max="400"
+          max="10000"
           onChange={(event) => {
             setinitVel(parseInt(event.target.value));
           }}
@@ -113,7 +115,7 @@ export function Canvas() {
             setRunSim(!runSim);
           }}
         >
-          LAUNCH
+          Kanoni FUCk yeah
         </Button>
       </div>
 
@@ -155,6 +157,7 @@ const styles = {
     fontSize: 20,
     color: `${StandardColors.ColorPink70} !important`,
   }),
+
   inputsContainer: style({
     rowGap: 15,
     padding: 20,
