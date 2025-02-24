@@ -5,24 +5,29 @@ import { use, useEffect, useState } from "react";
 import { Position } from "../models";
 import { Button, Input } from "reactstrap";
 import useMousePosition from "../hooks/UseMousePosition";
+import cannon from "../graphics/cannon2.svg";
+import { useMousePositionClick } from "../hooks/UseMousePosition";
 
 export function Canvas() {
   const [runSim, setRunSim] = useState<boolean>(false);
-  const [initVel, setinitVel] = useState<[number, number]>([0, 0]);
   const [cannonProps, setCannonProps] = useState<CannonballProps[]>([
     {
       color: StandardColors.ColorBlue10,
       size: 30,
-      position: { x: 435, y: 120 },
+      position: { x: 0.92 * window.innerWidth, y: 0.9 * window.innerHeight },
     },
   ]);
-  const [vel, setVel] = useState<[number, number]>(initVel);
+  const [time, setTime] = useState<number>(0);
+  const [vel, setVel] = useState<[number, number]>([0, 0]);
+  const [angle, setAngle] = useState<number>(0);
+
+  const mousePosition = useMousePosition();
+  const mousePositionClick = useMousePositionClick();
 
   const fps = 60;
   const ms = 1000 / fps;
   const g = 9.81;
   // const cd = 0.04;
-  const [time, setTime] = useState<number>(0);
 
   useEffect(() => {
     if (runSim) {
@@ -33,93 +38,81 @@ export function Canvas() {
     }
   }, [runSim, time]);
 
+  // Kanoni rotate
+  useEffect(() => {
+    setAngle((Math.atan(mousePosition[1] / mousePosition[0]) * 180) / Math.PI);
+    console.log(mousePosition);
+  }, [mousePosition]);
+
+  // Kanoni fire
+  useEffect(() => {
+    setVel([
+      -(mousePositionClick[0] / window.innerWidth) * 100,
+      -((window.innerHeight - mousePositionClick[1]) / window.innerHeight) *
+        100,
+    ]);
+    setRunSim(true);
+  }, [mousePositionClick]);
+
   function CanoniPhysics(time: number) {
     let { position, color, size } = cannonProps[cannonProps.length - 1];
 
-    const cd = size / 1000;
+    const cd = [0.001 * vel[0] ** 2, 0.001 * vel[1] ** 2];
 
-    setVel([vel[0] * (1 - cd), vel[1] * (1 - cd)]);
+    setVel([vel[0] * (1 - cd[0]), vel[1] * (1 - cd[1])]);
 
     position.x = position.x + (vel[0] * time) / 1000;
     position.y =
-      position.y + +(vel[1] * time) / 1000 + 0.5 * g * (time / 1000) ** 2;
+      position.y + (vel[1] * time) / 1000 + 0.5 * g * (time / 1000) ** 2;
 
     const colorNum = 10 * Math.trunc((10 * position.y) / window.innerHeight);
     color =
       StandardColors[("ColorBlue" + colorNum) as keyof typeof StandardColors];
 
     const hasHitFloor = position.y + size >= window.innerHeight;
+    const hasHitTop = position.y - size <= 0;
+    const hasHitWall = position.x + size <= 0;
+    console.log(position.x);
 
-    if (hasHitFloor) {
-      position.y = window.innerHeight - size;
-      setRunSim(false);
-    }
-    if (position.x + size >= window.innerWidth) {
-      position.x = window.innerWidth - size;
+    if (hasHitWall) {
+      position.x = 0;
+      setVel([0, 0]);
     }
 
     cannonProps[cannonProps.length - 1].position = position;
     cannonProps[cannonProps.length - 1].color = color;
 
+    if (hasHitTop) {
+      setVel([vel[0], -vel[1]]);
+    }
     if (hasHitFloor) {
       setCannonProps([
         ...cannonProps,
         {
           color: StandardColors.ColorBlue10,
           size: 30,
-          position: { x: 435, y: 120 },
+          position: {
+            x: 0.92 * window.innerWidth,
+            y: 0.9 * window.innerHeight,
+          },
         },
       ]);
+      position.y = window.innerHeight - size;
+      setRunSim(false);
       setTime(0);
-      setVel(initVel);
     } else {
       setCannonProps([...cannonProps]);
     }
   }
+
   return (
     <div className={styles.container}>
-      <div className={styles.inputsContainer}>
-        <h1 className={styles.headers}>
-          {" "}
-          <center>PP size</center>{" "}
-        </h1>
-        <Input
-          type="range"
-          name="range"
-          min="20"
-          max="80"
-          onChange={(event) => {
-            cannonProps[cannonProps.length - 1].size = parseInt(
-              event.target.value,
-            );
-            setCannonProps([...cannonProps]);
-          }}
-        />
-        <h1 className={styles.headers}>
-          {" "}
-          <center>Taxhthta</center>{" "}
-        </h1>
-        <Input
-          type="range"
-          name="range"
-          min="10"
-          max="10000"
-          onChange={(event) => {
-            setinitVel(parseInt(event.target.value));
-          }}
-        />
-        <Button
-          color="primary"
-          className={styles.button}
-          onClick={() => {
-            setRunSim(!runSim);
-          }}
-        >
-          Kanoni FUCk yeah
-        </Button>
-      </div>
-
-      <img className={styles.image} src="s-l400-removebg-preview.png" />
+      <img
+        src={cannon}
+        className={styles.cannon}
+        alt="Dynamic Rotation"
+        style={{ transform: `rotate(${angle - 60}deg)` }}
+      />
       {cannonProps && cannonProps.map((element) => <Cannonball {...element} />)}
     </div>
   );
@@ -174,6 +167,13 @@ const styles = {
     color: StandardColors.ColorBlue20,
     border: StandardColors.ColorBlue40,
     textShadow: "0 0 15px #FF0000, 0 0 15px rgb(104, 158, 108)",
+  }),
+  cannon: style({
+    width: "25%",
+    height: "25%",
+    position: "absolute",
+    top: "78%",
+    right: "82%",
   }),
 };
 function getElementsByTagName(arg0: string) {
