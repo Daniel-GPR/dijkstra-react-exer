@@ -1,11 +1,13 @@
 import { style } from "typestyle";
-import { Position } from "../models/Position";
 import { BoxShadowStyles } from "../styles";
+import { Vector } from "../models";
 
 export interface CannonballProps {
   color: string;
   size: number;
-  position: Position;
+  position: Vector;
+  velocity: Vector;
+  acceleration: Vector;
 }
 
 export function Cannonball(props: CannonballProps) {
