@@ -7,9 +7,9 @@ import { Button, Input } from "reactstrap";
 import useMousePosition from "../hooks/UseMousePosition";
 import cannon from "../graphics/cannon2.svg";
 import { useMousePositionClick } from "../hooks/UseMousePosition";
+import { styles } from "../styles/Styles";
 
 export function Canvas() {
-  const [runSim, setRunSim] = useState<boolean>(false);
   const [cannonProps, setCannonProps] = useState<CannonballProps[]>([
     {
       color: StandardColors.ColorBlue10,
@@ -17,9 +17,12 @@ export function Canvas() {
       position: { x: 0.92 * window.innerWidth, y: 0.9 * window.innerHeight },
     },
   ]);
+
+  const [runSim, setRunSim] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const [vel, setVel] = useState<[number, number]>([0, 0]);
   const [angle, setAngle] = useState<number>(0);
+  const [clickCount, setClickCount] = useState<number>(0);
 
   const mousePosition = useMousePosition();
   const mousePositionClick = useMousePositionClick();
@@ -27,7 +30,6 @@ export function Canvas() {
   const fps = 60;
   const ms = 1000 / fps;
   const g = 9.81;
-  // const cd = 0.04;
 
   useEffect(() => {
     if (runSim) {
@@ -40,26 +42,38 @@ export function Canvas() {
 
   // Kanoni rotate
   useEffect(() => {
-    setAngle((Math.atan(mousePosition[1] / mousePosition[0]) * 180) / Math.PI);
-    console.log(mousePosition);
+    setAngle(
+      Math.atan2(
+        (0.9 * window.innerHeight - mousePosition[1]) /
+          (0.9 * window.innerHeight),
+        (mousePosition[0] - 0.1 * window.innerWidth) /
+          (0.9 * window.innerWidth),
+      ),
+    );
+    if (time > 3000) {
+      setRunSim(false);
+      setTime(0);
+    }
   }, [mousePosition]);
 
   // Kanoni fire
   useEffect(() => {
     setVel([
-      -(mousePositionClick[0] / window.innerWidth) * 100,
-      -((window.innerHeight - mousePositionClick[1]) / window.innerHeight) *
-        100,
+      -(mousePositionClick[0] / window.innerWidth) * 50,
+      -((window.innerHeight - mousePositionClick[1]) / window.innerHeight) * 50,
     ]);
-    setRunSim(true);
+    setClickCount(clickCount + 1);
+    if (clickCount >= 1) {
+      setRunSim(true);
+    }
   }, [mousePositionClick]);
 
   function CanoniPhysics(time: number) {
     let { position, color, size } = cannonProps[cannonProps.length - 1];
 
-    const cd = [0.001 * vel[0] ** 2, 0.001 * vel[1] ** 2];
+    const cd = [0.0001 * vel[0] ** 2, 0.0001 * vel[1] ** 2];
 
-    setVel([vel[0] * (1 - cd[0]), vel[1] * (1 - cd[1])]);
+    // setVel([vel[0] * (1 - cd[0]), vel[1] * (1 - cd[1])]);
 
     position.x = position.x + (vel[0] * time) / 1000;
     position.y =
@@ -71,21 +85,29 @@ export function Canvas() {
 
     const hasHitFloor = position.y + size >= window.innerHeight;
     const hasHitTop = position.y - size <= 0;
-    const hasHitWall = position.x + size <= 0;
-    console.log(position.x);
+    const hasHitRightWall = position.x - size <= 0;
+    const hasHitLeftWall = position.x + size >= window.innerWidth;
 
-    if (hasHitWall) {
+    // console.log(position.x, position.y, "mama mia");
+
+    if (hasHitRightWall) {
       position.x = 0;
-      setVel([0, 0]);
+      setVel([-0.8 * vel[0], vel[1]]);
     }
 
-    cannonProps[cannonProps.length - 1].position = position;
-    cannonProps[cannonProps.length - 1].color = color;
+    if (hasHitLeftWall) {
+      position.x = window.innerWidth;
+      setVel([-0.8 * vel[0], vel[1]]);
+    }
+    // cannonProps[cannonProps.length - 1].position = position;
+    // cannonProps[cannonProps.length - 1].color = color;
 
     if (hasHitTop) {
-      setVel([vel[0], -vel[1]]);
+      position.y = 0;
+      setVel([vel[0], -0.8 * vel[1]]);
     }
-    if (hasHitFloor) {
+
+    if (hasHitFloor && vel[0] < 0.1) {
       setCannonProps([
         ...cannonProps,
         {
@@ -100,6 +122,10 @@ export function Canvas() {
       position.y = window.innerHeight - size;
       setRunSim(false);
       setTime(0);
+    } else if (hasHitFloor) {
+      position.y = window.innerHeight - size;
+      setVel([vel[0], -0.8 * vel[1]]);
+      setCannonProps([...cannonProps]);
     } else {
       setCannonProps([...cannonProps]);
     }
@@ -111,71 +137,13 @@ export function Canvas() {
         src={cannon}
         className={styles.cannon}
         alt="Dynamic Rotation"
-        style={{ transform: `rotate(${angle - 60}deg)` }}
+        style={{ transform: `rotate(${0.5 - angle}rad)` }}
       />
       {cannonProps && cannonProps.map((element) => <Cannonball {...element} />)}
     </div>
   );
 }
 
-const styles = {
-  container: style({
-    backgroundColor: StandardColors.ColorGreen20,
-    width: "100%",
-    height: "100%",
-    color: StandardColors.ColorBlue90,
-    position: "relative",
-  }),
-
-  text: style({
-    color: StandardColors.ColorRed90,
-  }),
-
-  image: style({
-    width: 400,
-    height: 200,
-    position: "absolute",
-    top: 50,
-    right: 50,
-  }),
-  button: style({
-    padding: 10,
-    position: "relative",
-    fontSize: 30,
-    color: `${StandardColors.ColorPink90} !important`,
-  }),
-  input: style({
-    padding: 15,
-    position: "relative",
-    fontSize: 20,
-    color: `${StandardColors.ColorPink70} !important`,
-  }),
-
-  inputsContainer: style({
-    rowGap: 15,
-    padding: 20,
-    position: "absolute",
-    top: "15%",
-    left: "2%",
-    fontSize: 20,
-    backgroundColor: StandardColors.ColorInk20,
-    color: `${StandardColors.ColorPink70} !important`,
-    display: "flex",
-    flexDirection: "column",
-  }),
-  headers: style({
-    color: StandardColors.ColorBlue20,
-    border: StandardColors.ColorBlue40,
-    textShadow: "0 0 15px #FF0000, 0 0 15px rgb(104, 158, 108)",
-  }),
-  cannon: style({
-    width: "25%",
-    height: "25%",
-    position: "absolute",
-    top: "78%",
-    right: "82%",
-  }),
-};
 function getElementsByTagName(arg0: string) {
   throw new Error("Function not implemented.");
 }
