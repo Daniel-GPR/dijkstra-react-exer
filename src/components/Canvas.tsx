@@ -12,7 +12,7 @@ import { styles } from "../styles/Styles";
 export function Canvas() {
   const [cannonProps, setCannonProps] = useState<CannonballProps[]>([
     {
-      color: StandardColors.ColorBlue10,
+      color: StandardColors.ColorTransparent,
       size: 30,
       position: { x: 0.92 * window.innerWidth, y: 0.9 * window.innerHeight },
     },
@@ -42,25 +42,45 @@ export function Canvas() {
 
   // Kanoni rotate
   useEffect(() => {
-    setAngle(
-      Math.atan2(
-        (0.9 * window.innerHeight - mousePosition[1]) /
-          (0.9 * window.innerHeight),
-        (mousePosition[0] - 0.1 * window.innerWidth) /
-          (0.9 * window.innerWidth),
-      ),
-    );
-    if (time > 3000) {
-      setRunSim(false);
-      setTime(0);
-    }
+    setTimeout(() => {
+      setAngle(
+        Math.atan2(
+          (0.9 * window.innerHeight - mousePosition[1]) /
+            (0.9 * window.innerHeight),
+          (mousePosition[0] - 0.1 * window.innerWidth) /
+            (0.9 * window.innerWidth),
+        ),
+      );
+    }, 30);
   }, [mousePosition]);
 
   // Kanoni fire
   useEffect(() => {
+    setCannonProps([
+      ...cannonProps,
+      {
+        color: StandardColors.ColorBlue70,
+        size: 30,
+        position: {
+          x:
+            0.9 * window.innerWidth -
+            0.13 * window.innerWidth * Math.cos(angle),
+          y:
+            0.88 * window.innerHeight -
+            0.13 * window.innerWidth * Math.sin(angle),
+        },
+      },
+    ]);
+
     setVel([
-      -(mousePositionClick[0] / window.innerWidth) * 50,
-      -((window.innerHeight - mousePositionClick[1]) / window.innerHeight) * 50,
+      -(
+        (mousePositionClick[0] - 0.11 * window.innerWidth) /
+        window.innerWidth
+      ) * 50,
+      -(
+        (0.88 * window.innerHeight - mousePositionClick[1]) /
+        window.innerHeight
+      ) * 50,
     ]);
     setClickCount(clickCount + 1);
     if (clickCount >= 1) {
@@ -73,7 +93,7 @@ export function Canvas() {
 
     const cd = [0.0001 * vel[0] ** 2, 0.0001 * vel[1] ** 2];
 
-    // setVel([vel[0] * (1 - cd[0]), vel[1] * (1 - cd[1])]);
+    setVel([vel[0] * (1 - cd[0]), vel[1] * (1 - cd[1])]);
 
     position.x = position.x + (vel[0] * time) / 1000;
     position.y =
@@ -91,7 +111,7 @@ export function Canvas() {
     // console.log(position.x, position.y, "mama mia");
 
     if (hasHitRightWall) {
-      position.x = 0;
+      position.x = size;
       setVel([-0.8 * vel[0], vel[1]]);
     }
 
@@ -99,19 +119,19 @@ export function Canvas() {
       position.x = window.innerWidth;
       setVel([-0.8 * vel[0], vel[1]]);
     }
-    // cannonProps[cannonProps.length - 1].position = position;
-    // cannonProps[cannonProps.length - 1].color = color;
+    cannonProps[cannonProps.length - 1].position = position;
+    cannonProps[cannonProps.length - 1].color = color;
 
     if (hasHitTop) {
-      position.y = 0;
+      position.y = size;
       setVel([vel[0], -0.8 * vel[1]]);
     }
 
-    if (hasHitFloor && vel[0] < 0.1) {
+    if (hasHitFloor && Math.abs(vel[0]) < 0.1) {
       setCannonProps([
         ...cannonProps,
         {
-          color: StandardColors.ColorBlue10,
+          color: StandardColors.ColorBlue70,
           size: 30,
           position: {
             x: 0.92 * window.innerWidth,
@@ -123,21 +143,72 @@ export function Canvas() {
       setRunSim(false);
       setTime(0);
     } else if (hasHitFloor) {
+      console.log("mamamia");
       position.y = window.innerHeight - size;
       setVel([vel[0], -0.8 * vel[1]]);
       setCannonProps([...cannonProps]);
     } else {
       setCannonProps([...cannonProps]);
     }
+
+    if (time > 5000) {
+      window.alert("Runtime limit Exeded");
+      setRunSim(false);
+      setTime(0);
+      setCannonProps([
+        ...cannonProps,
+        {
+          color: StandardColors.ColorBlue70,
+          size: 30,
+          position: {
+            x: 0.92 * window.innerWidth,
+            y: 0.9 * window.innerHeight,
+          },
+        },
+      ]);
+    }
   }
 
   return (
     <div className={styles.container}>
+      <Button
+        className={styles.button}
+        onClick={() => {
+          setVel([0, 0]);
+          setRunSim(false);
+          setClickCount(0);
+        }}
+      >
+        {" "}
+        Stop Sim
+      </Button>
+      <Button
+        className={styles.button}
+        onClick={() => {
+          setCannonProps([
+            {
+              color: StandardColors.ColorTransparent,
+              size: 30,
+              position: {
+                x: 0.92 * window.innerWidth,
+                y: 0.9 * window.innerHeight,
+              },
+            },
+          ]);
+          setClickCount(0);
+          setRunSim(false);
+        }}
+      >
+        Clear Balls
+      </Button>
       <img
         src={cannon}
         className={styles.cannon}
         alt="Dynamic Rotation"
-        style={{ transform: `rotate(${0.5 - angle}rad)` }}
+        style={{
+          transform: `rotate(${0.5 - angle}rad)`,
+          transformOrigin: "45% 54%",
+        }}
       />
       {cannonProps && cannonProps.map((element) => <Cannonball {...element} />)}
     </div>

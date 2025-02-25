@@ -3,7 +3,7 @@ import { StandardColors } from "./Colors";
 
 export const styles = {
   container: style({
-    backgroundColor: StandardColors.ColorGreen20,
+    backgroundColor: StandardColors.ColorYellow20,
     width: "100%",
     height: "100%",
     color: StandardColors.ColorBlue90,
@@ -25,8 +25,9 @@ export const styles = {
   button: style({
     padding: 10,
     position: "relative",
-    fontSize: 30,
-    color: `${StandardColors.ColorPink90} !important`,
+    fontSize: 20,
+    color: `${StandardColors.ColorBlack} !important`,
+    backgroundColor: StandardColors.ColorDarkGray20,
   }),
 
   input: style({
@@ -59,7 +60,7 @@ export const styles = {
     width: "25%",
     height: "25%",
     position: "absolute",
-    top: "78%",
-    right: "82%",
+    top: "75%",
+    right: "78%",
   }),
 };
