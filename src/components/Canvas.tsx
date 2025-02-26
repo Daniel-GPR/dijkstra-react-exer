@@ -1,6 +1,6 @@
 import { style } from "typestyle";
 import { StandardColors } from "../styles";
-import { Cannonball, CannonballProps } from "./Cannonball";
+import { CannonballClass, CannonballProps } from "./CannonBallClass";
 import { use, useEffect, useState } from "react";
 import { Position } from "../models";
 import { Button, Input } from "reactstrap";
@@ -8,8 +8,12 @@ import useMousePosition from "../hooks/UseMousePosition";
 import cannon from "../graphics/cannon2.svg";
 import { useMousePositionClick } from "../hooks/UseMousePosition";
 import { styles } from "../styles/Styles";
+import { Person } from "./TestClass";
+import { Cannonball } from "./Cannonball";
 
 export function Canvas() {
+  const zisis = new Person("zisi-san", 40);
+
   const [cannonProps, setCannonProps] = useState<CannonballProps[]>([
     {
       color: StandardColors.ColorTransparent,
