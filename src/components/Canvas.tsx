@@ -2,7 +2,7 @@ import { style } from "typestyle";
 import { StandardColors } from "../styles";
 import { Cannonball, CannonballProps } from "./Cannonball";
 import { useEffect, useState } from "react";
-import { Position, Vector } from "../models";
+import { Vector } from "../models";
 import { Button, Input } from "reactstrap";
 import useMousePosition from "../hooks/UseMousePosition";
 import cannon from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/cannon.svg";
@@ -17,18 +17,16 @@ export function Canvas() {
     y: -(useMousePosition().y - 550),
   };
   const [runsim, setRunsim] = useState<boolean>(false);
-  const [cannonball, setCannonball] = useState<CannonballProps>({
-    ...defaultCannonball,
-  });
+  const [cannonball, setCannonball] =
+    useState<CannonballProps>(defaultCannonball());
   const [cannonState, setCannonState] = useState<Cannon>(new Cannon([]));
 
   const [run, setRun] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log(dist);
     const handleClick = () => {
       resetcannon();
-      setCannonball({ ...cannonball, velocity: dist });
+      setCannonball({ ...defaultCannonball(), velocity: dist });
       cannonState.createCannonball(cannonball);
     };
 
@@ -89,13 +87,16 @@ export function Canvas() {
         min={10}
         value={cannonball.size}
         onChange={(event) =>
-          setCannonball({ ...cannonball, size: parseInt(event.target.value) })
+          setCannonball({
+            ...defaultCannonball(),
+            size: parseInt(event.target.value),
+          })
         }
       />
       <Button
         onClick={() => {
           resetcannon();
-          cannonState.createCannonball(cannonball);
+          cannonState.createCannonball(defaultCannonball());
         }}
         className={styles.button}
       >

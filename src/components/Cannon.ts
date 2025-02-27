@@ -1,17 +1,29 @@
-import { Vector } from "../models";
 import { StandardColors } from "../styles/Colors";
 import { addVectors, divVector } from "../utils/VectorUtils";
 import { CannonballProps } from "./Cannonball";
 
-export const defaultCannonball: CannonballProps = {
-  color: StandardColors.ColorPurple80,
-  size: 50,
-  position: { x: 20, y: 20 },
-  velocity: { x: 200, y: 200 },
-  acceleration: { x: 0, y: 0 },
-};
+// const colors = Object.values(StandardColors);
+// const randomColor = colors[Math.floor(Math.random() * colors.length)];
+export function defaultCannonball(): CannonballProps {
+  const colors = Object.values(StandardColors);
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  return {
+    color: randomColor,
+    size: 50,
+    position: { x: 20, y: 20 },
+    velocity: { x: 200, y: 200 },
+    acceleration: { x: 0, y: 0 },
+  };
+}
+// const defaultCannonball: CannonballProps = {
+//   color: randomColor,
+//   size: 50,
+//   position: { x: 20, y: 20 },
+//   velocity: { x: 200, y: 200 },
+//   acceleration: { x: 0, y: 0 },
+// };
 export class Cannon {
-  cannonballs: CannonballProps[] = [{ ...defaultCannonball }];
+  cannonballs: CannonballProps[] = [defaultCannonball()];
   fps: number = 60;
 
   constructor(cannonballs: CannonballProps[]) {
@@ -25,7 +37,6 @@ export class Cannon {
     );
     const movement = divVector(cannonball.velocity, this.fps);
     cannonball.position = addVectors(cannonball.position, movement);
-    console.log(cannonball.position);
   }
 
   checkBorder(cannonball: CannonballProps): void {
@@ -53,11 +64,13 @@ export class Cannon {
     });
   }
 
+  setRandColor(): void {}
+
   createCannonball(cannon?: CannonballProps): void {
     if (cannon) {
       this.cannonballs.push({ ...cannon });
     } else {
-      this.cannonballs.push({ ...defaultCannonball });
+      this.cannonballs.push(defaultCannonball());
     }
   }
 
@@ -65,7 +78,6 @@ export class Cannon {
     this.cannonballs.forEach((cannonball) => {
       this.checkBorder(cannonball);
       this.move(cannonball);
-      console.log(this.cannonballs);
     });
   }
 }
