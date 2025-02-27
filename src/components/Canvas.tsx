@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Vector } from "../models";
 import { Button, Input } from "reactstrap";
 import useMousePosition from "../hooks/UseMousePosition";
-import cannon from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/cannon.svg";
+import cannon from "./cannon.svg";
 import { Cannon, defaultCannonball } from "./Cannon";
 
 export function Canvas() {
