@@ -1,20 +1,21 @@
 import { Position } from "../models";
 import { style } from "typestyle";
 import { BoxShadowStyles } from "../styles";
+import { Cannonball, CannonballProps } from "./Cannonball";
 
-export interface CannonballProps {
-  color: string;
-  size: number;
-  position: Position;
-}
+export class CannonballClass {
+  launchTime: number;
+  props: CannonballProps;
+  vel: [number, number];
+  // startFrame: number
 
-export class CannonballClass{
-  size: number
-  vel: [number,number]
-
-  constructor(size:number,  vel: [number,number]){
-    this.size = size
-    this.vel = vel
+  constructor(
+    launchTime: number,
+    props: CannonballProps,
+    vel: [number, number],
+  ) {
+    this.vel = vel;
+    this.props = props;
+    this.launchTime = launchTime;
   }
-
 }

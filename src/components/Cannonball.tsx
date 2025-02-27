@@ -23,3 +23,4 @@ export function Cannonball(props: CannonballProps) {
   };
   return <div className={styles.cannonball} />;
 }
+
