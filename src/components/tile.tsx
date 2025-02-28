@@ -1,11 +1,26 @@
 import { style } from "typestyle";
 import { StandardColors } from "../styles";
+import { Position } from "../models";
 
-export const tile = {
-  tile: style({
-    backgroundColor: StandardColors.ColorBlue90,
-    width: "100px",
-    height: "100px",
-    position: "relative",
-  }),
-};
+export interface TileProps {
+  position: Position;
+  size: number;
+  dark: boolean;
+}
+export function Tile(props: TileProps) {
+  const color: string = props.dark
+    ? StandardColors.ColorBlue90
+    : StandardColors.ColorDarkGray05;
+
+  const styles = {
+    tile: style({
+      backgroundColor: color,
+      width: `${props.size}px`,
+      height: `${props.size}px`,
+      position: "absolute",
+      top: props.position.y,
+      left: props.position.x,
+    }),
+  };
+  return <div className={styles.tile} />;
+}
