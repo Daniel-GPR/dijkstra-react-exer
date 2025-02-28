@@ -1,8 +1,10 @@
 import { Position } from "../models";
+import { Team } from "./Chesspiece";
+import { Queen } from "./Pieces/Queen";
 import { Tile, TileProps } from "./Tile";
 
-const chessboardSize: number = 600;
-const tileSize: number = chessboardSize / 8;
+export const chessboardSize: number = 400;
+export const tileSize: number = chessboardSize / 8;
 
 export function Chessboard() {
   const boardProps: TileProps[][] = [[]];
@@ -23,14 +25,18 @@ export function Chessboard() {
     }
     tilePosY += tileSize;
   }
+  const queen = new Queen({ team: Team.White, position: { x: 150, y: 350 } });
+  const to = queen.movement();
 
   return (
     <div>
-      {boardProps.map((row, rowIndex) =>
-        row.map((tileProps, columnIndex) => (
-          <Tile key={`${rowIndex}${columnIndex}`} {...tileProps} />
-        )),
-      )}
+      <>
+        {boardProps.map((row, rowIndex) =>
+          row.map((tileProps, columnIndex) => (
+            <Tile key={`${rowIndex}${columnIndex}`} {...tileProps} />
+          )),
+        )}
+      </>
     </div>
   );
 }
