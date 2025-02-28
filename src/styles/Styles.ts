@@ -3,11 +3,25 @@ import { StandardColors } from "./Colors";
 
 export const styles = {
   container: style({
-    backgroundColor: StandardColors.ColorYellow20,
+    backgroundColor: StandardColors.ColorBlue30,
     width: "100%",
     height: "100%",
     color: StandardColors.ColorBlue90,
     position: "relative",
+    borderColor: StandardColors.ColorBlack,
+    border: "12",
+  }),
+
+  chessBoardContainer: style({
+    backgroundColor: StandardColors.ColorYellow20,
+    // width: "100%",
+    height: "100%",
+    aspectRatio: "1",
+    color: StandardColors.ColorBlue90,
+    position: "absolute",
+    left: (window.innerWidth - window.innerHeight) / 2,
+    borderColor: StandardColors.ColorBlack,
+    border: "12",
   }),
 
   text: style({
@@ -48,19 +62,5 @@ export const styles = {
     color: `${StandardColors.ColorPink70} !important`,
     display: "flex",
     flexDirection: "column",
-  }),
-
-  headers: style({
-    color: StandardColors.ColorBlue20,
-    border: StandardColors.ColorBlue40,
-    textShadow: "0 0 15px #FF0000, 0 0 15px rgb(104, 158, 108)",
-  }),
-
-  cannon: style({
-    width: "25%",
-    height: "25%",
-    position: "absolute",
-    top: "75%",
-    right: "78%",
   }),
 };

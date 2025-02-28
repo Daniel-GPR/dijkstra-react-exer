@@ -4,3 +4,4 @@ export * from "./Queen";
 export * from "./Bishop";
 export * from "./Piece";
 export * from "./Tower";
+export * from "./bober";

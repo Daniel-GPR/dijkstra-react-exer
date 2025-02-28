@@ -13,8 +13,14 @@ import {
   Bishop,
   Knight,
 } from "../assets/chesspieces";
+import { Chessboard } from "../graphics/Chessboard";
 
 export function Canvas() {
-  const color = StandardColors.ColorBlue50;
-  return <div className={styles.container}></div>;
+  return (
+    <div className={styles.container}>
+      <div className={styles.chessBoardContainer}>
+        <Chessboard />
+      </div>
+    </div>
+  );
 }
