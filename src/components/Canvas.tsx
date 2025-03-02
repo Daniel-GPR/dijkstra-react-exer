@@ -12,6 +12,7 @@ import {
   Tower,
   Bishop,
   Knight,
+  bober,
 } from "../assets/chesspieces";
 import { Chessboard } from "../graphics/Chessboard";
 
