@@ -1,16 +1,24 @@
+import { style } from "typestyle";
 import { Position } from "../models";
-import { Team } from "./Chesspiece";
+import { Chesspiece, Team } from "./Chesspiece";
+import { Bishop } from "./Pieces/Bishop";
+import { Knight } from "./Pieces/Knight";
 import { Queen } from "./Pieces/Queen";
+import { Rook } from "./Pieces/Rook";
 import { Tile, TileProps } from "./Tile";
+import { Soldier } from "./Pieces/Soldiers";
+import { King } from "./Pieces/King";
+import { Pieces } from "./Pieces";
 
 export const chessboardSize: number = 400;
 export const tileSize: number = chessboardSize / 8;
 
 export function Chessboard() {
+  // BOARD
   const boardProps: TileProps[][] = [[]];
   let tilePosX: number = 0;
   let tilePosY: number = 0;
-  let darktile: boolean = true;
+  let darktile: boolean = false;
   for (let i = 0; i <= 7; i++) {
     boardProps.push([]);
     tilePosX = 0;
@@ -25,8 +33,18 @@ export function Chessboard() {
     }
     tilePosY += tileSize;
   }
-  const queen = new Queen({ team: Team.White, position: { x: 150, y: 350 } });
-  const to = queen.movement();
+
+  // PIECES
+  const pieces = Pieces();
+  console.log(pieces);
+  // const styles = {
+  //   cannon: style({
+  //     width: `${tileSize}px`,
+  //     position: "absolute",
+  //     top: `${queen.position.y}px`,
+  //     left: `${queen.position.x}px`,
+  //   }),
+  // };
 
   return (
     <div>
@@ -36,6 +54,20 @@ export function Chessboard() {
             <Tile key={`${rowIndex}${columnIndex}`} {...tileProps} />
           )),
         )}
+      </>
+      <>
+        {pieces.map((piece, Index) => (
+          <img
+            key={Index}
+            src={piece.image}
+            style={{
+              width: `${tileSize}px`,
+              position: "absolute",
+              top: `${piece.position.y}px`,
+              left: `${piece.position.x}px`,
+            }}
+          />
+        ))}
       </>
     </div>
   );

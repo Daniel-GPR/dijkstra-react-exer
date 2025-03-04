@@ -12,6 +12,8 @@ export interface ChesspieceProps {
 export class Chesspiece {
   team: Team;
   position: Position;
+  image: string | undefined;
+  // to: Position[]
 
   constructor(props: ChesspieceProps) {
     this.team = props.team;

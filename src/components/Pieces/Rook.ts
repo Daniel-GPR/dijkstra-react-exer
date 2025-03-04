@@ -2,19 +2,18 @@ import { Position } from "../../models";
 import { addPositions } from "../../utils/VectorUtils";
 import { chessboardSize, tileSize } from "../Chessboard";
 import { Chesspiece, ChesspieceProps, Team } from "../Chesspiece";
-import whiteQueen from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/wq.png";
-import blackQueen from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/bq.png";
+import whiteRook from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/wr.png";
+import blackRook from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/br.png";
 
-export class Queen extends Chesspiece {
+export class Rook extends Chesspiece {
   constructor(props: ChesspieceProps) {
     super(props);
     if (this.team === Team.White) {
-      this.image = whiteQueen;
+      this.image = whiteRook;
     } else {
-      this.image = blackQueen;
+      this.image = blackRook;
     }
   }
-
   movement() {
     const from: Position = this.position;
     // STRAIGHT
@@ -23,11 +22,6 @@ export class Queen extends Chesspiece {
     const upSquares: number = from.y / tileSize;
     const downSquares: number = (chessboardSize - from.y) / tileSize - 1;
     const to: Position[] = [];
-    // DIAGONAL
-    const leftUp = Math.min(leftSquares, upSquares);
-    const rightUp = Math.min(rightSquares, upSquares);
-    const leftDown = Math.min(leftSquares, downSquares);
-    const rightDown = Math.min(rightSquares, downSquares);
 
     // STRAIGHT
     for (let i = 1; i <= leftSquares; i++) {
@@ -44,23 +38,6 @@ export class Queen extends Chesspiece {
 
     for (let i = 1; i <= downSquares; i++) {
       to.push(addPositions(from, { x: 0, y: i * tileSize }));
-    }
-
-    // DIAGONAL
-    for (let i = 1; i <= leftUp; i++) {
-      to.push(addPositions(from, { x: -i * tileSize, y: -i * tileSize }));
-    }
-
-    for (let i = 1; i <= rightUp; i++) {
-      to.push(addPositions(from, { x: i * tileSize, y: -i * tileSize }));
-    }
-
-    for (let i = 1; i <= leftDown; i++) {
-      to.push(addPositions(from, { x: -i * tileSize, y: i * tileSize }));
-    }
-
-    for (let i = 1; i <= rightDown; i++) {
-      to.push(addPositions(from, { x: i * tileSize, y: i * tileSize }));
     }
 
     console.log(to);

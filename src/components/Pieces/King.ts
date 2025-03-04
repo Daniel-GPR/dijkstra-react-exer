@@ -1,9 +1,19 @@
 import { Position } from "../../models";
 import { addPositions } from "../../utils/VectorUtils";
 import { tileSize } from "../Chessboard";
-import { Chesspiece } from "../Chesspiece";
+import { Chesspiece, ChesspieceProps, Team } from "../Chesspiece";
+import whiteKing from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/wk.png";
+import blackKing from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/bk.png";
 
 export class King extends Chesspiece {
+  constructor(props: ChesspieceProps) {
+    super(props);
+    if (this.team === Team.White) {
+      this.image = whiteKing;
+    } else {
+      this.image = blackKing;
+    }
+  }
   movement(from: Position) {
     const left: Position = addPositions(from, { x: -tileSize, y: 0 });
     const right: Position = addPositions(from, { x: +tileSize, y: 0 });
