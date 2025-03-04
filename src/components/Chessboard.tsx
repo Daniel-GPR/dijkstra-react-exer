@@ -9,6 +9,8 @@ import { Tile, TileProps } from "./Tile";
 import { Soldier } from "./Pieces/Soldiers";
 import { King } from "./Pieces/King";
 import { Pieces } from "./Pieces";
+import { Button } from "reactstrap";
+import { useState } from "react";
 
 export const chessboardSize: number = 400;
 export const tileSize: number = chessboardSize / 8;
@@ -35,7 +37,7 @@ export function Chessboard() {
   }
 
   // PIECES
-  const pieces = Pieces();
+  const [pieces, setPieces] = useState<Chesspiece[]>(Pieces());
   console.log(pieces);
   // const styles = {
   //   cannon: style({
@@ -69,6 +71,21 @@ export function Chessboard() {
           />
         ))}
       </>
+      <Button
+        className={styles.button}
+        onClick={() => {
+          pieces[5].move({ x: 100, y: 250 });
+          setPieces([...pieces]);
+        }}
+      />
     </div>
   );
 }
+
+const styles = {
+  button: style({
+    position: "absolute",
+    top: "5%",
+    left: "5%",
+  }),
+};

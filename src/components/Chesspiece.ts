@@ -20,7 +20,7 @@ export class Chesspiece {
     this.position = props.position;
   }
 
-  move(from: Position, to: Position) {
+  move(to: Position) {
     this.position = to;
   }
 }

@@ -14,6 +14,7 @@ export class Soldier extends Chesspiece {
       this.image = blackSoldier;
     }
   }
+
   movement(from: Position) {
     let to: Position = from;
     if (this.team === "White") {
