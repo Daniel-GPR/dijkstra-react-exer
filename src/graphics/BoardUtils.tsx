@@ -78,3 +78,11 @@ export function initializePieces(chessboard: TileProps[][]) {
   console.log(chessboard);
   return chessboard;
 }
+
+export function highlightTile(  )
+
+export function pieceProps(  ){
+
+
+  return 
+}

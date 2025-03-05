@@ -16,6 +16,7 @@ interface TileContent {
   team: Team;
   pieceType: ChessPiece;
 }
+ChessPiece["King"];
 
 export function Tile(props: TileProps) {
   return (
@@ -28,9 +29,14 @@ export function Tile(props: TileProps) {
         width: props.size,
         height: props.size,
       })}
+      data-props={props.contents ? props : ""}
+      data-piece={props.contents ? ChessPiece[props.contents.pieceType] : ""}
+      data-team={props.contents ? Team[props.contents.team] : ""}
     >
       {props.contents &&
-        chessPieceMap(props.contents.team, props.position)[props.contents.pieceType].icon}
+        chessPieceMap(props.contents.team, props.position)[
+          props.contents.pieceType
+        ].icon}
     </div>
   );
 }

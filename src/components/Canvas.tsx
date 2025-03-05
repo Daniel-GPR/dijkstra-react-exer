@@ -15,8 +15,11 @@ import {
   bober,
 } from "../assets/chesspieces";
 import { Chessboard } from "../graphics/Chessboard";
+import { chessPieceMap } from "../resources/ChessPieceMap";
+import { Team } from "../models/Team";
 
 export function Canvas() {
+
   return (
     <div className={styles.container}>
       <div className={styles.chessBoardContainer}>
