@@ -1,5 +1,5 @@
 import { Position } from "../../models";
-import { addPositions } from "../../utils/VectorUtils";
+import { addPositions, areEqual } from "../../utils/PositionUtils";
 import { tileSize } from "../Chessboard";
 import { Chesspiece, ChesspieceProps, Team } from "../Chesspiece";
 import whiteSoldier from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/wp.png";
@@ -15,12 +15,20 @@ export class Soldier extends Chesspiece {
     }
   }
 
-  movement(from: Position) {
-    let to: Position = from;
+  movement() {
+    const from: Position = this.position;
+
+    const to: Position[] = [];
     if (this.team === "White") {
-      to = addPositions(from, { x: 0, y: tileSize });
+      to.push(addPositions(from, { x: 0, y: -tileSize }));
+      if (from.y === 300) {
+        to.push(addPositions(from, { x: 0, y: -2 * tileSize }));
+      }
     } else {
-      to = addPositions(from, { x: 0, y: -tileSize });
+      to.push(addPositions(from, { x: 0, y: tileSize }));
+      if (from.y === 50) {
+        to.push(addPositions(from, { x: 0, y: 2 * tileSize }));
+      }
     }
     return to;
   }

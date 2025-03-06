@@ -1,5 +1,5 @@
 import { Position } from "../../models";
-import { addPositions } from "../../utils/VectorUtils";
+import { addPositions } from "../../utils/PositionUtils";
 import { tileSize } from "../Chessboard";
 import { Chesspiece, ChesspieceProps, Team } from "../Chesspiece";
 import whiteKing from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/wk.png";
@@ -14,7 +14,9 @@ export class King extends Chesspiece {
       this.image = blackKing;
     }
   }
-  movement(from: Position) {
+  movement() {
+    const from: Position = this.position;
+
     const left: Position = addPositions(from, { x: -tileSize, y: 0 });
     const right: Position = addPositions(from, { x: +tileSize, y: 0 });
     const up: Position = addPositions(from, { x: 0, y: -tileSize });

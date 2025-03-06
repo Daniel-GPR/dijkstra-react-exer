@@ -1,5 +1,5 @@
 import { Position } from "../../models";
-import { addPositions } from "../../utils/VectorUtils";
+import { addPositions } from "../../utils/PositionUtils";
 import { chessboardSize, tileSize } from "../Chessboard";
 import { Chesspiece, ChesspieceProps, Team } from "../Chesspiece";
 import whiteRook from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/wr.png";

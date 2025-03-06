@@ -19,3 +19,9 @@ export function multPosition(positionA: Position, a: number) {
 export function divPosition(positionA: Position, b: number) {
   return { x: positionA.x / b, y: positionA.y / b };
 }
+
+export function areEqual(positionA: Position, positionB: Position) {
+  const check: boolean =
+    positionA.x === positionB.x && positionA.y === positionB.y;
+  return check;
+}

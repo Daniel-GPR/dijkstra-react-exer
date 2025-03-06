@@ -6,6 +6,7 @@ export interface TileProps {
   position: Position;
   size: number;
   dark: boolean;
+  onClick?: () => void;
 }
 export function Tile(props: TileProps) {
   const color: string = props.dark
@@ -22,5 +23,5 @@ export function Tile(props: TileProps) {
       left: props.position.x,
     }),
   };
-  return <div className={styles.tile} />;
+  return <div className={styles.tile} onClick={props.onClick} />;
 }

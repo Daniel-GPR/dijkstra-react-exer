@@ -11,6 +11,7 @@ import { King } from "./Pieces/King";
 import { Pieces } from "./Pieces";
 import { Button } from "reactstrap";
 import { useState } from "react";
+import { areEqual } from "../utils/PositionUtils";
 
 export const chessboardSize: number = 400;
 export const tileSize: number = chessboardSize / 8;
@@ -53,7 +54,23 @@ export function Chessboard() {
       <>
         {boardProps.map((row, rowIndex) =>
           row.map((tileProps, columnIndex) => (
-            <Tile key={`${rowIndex}${columnIndex}`} {...tileProps} />
+            <Tile
+              key={`${rowIndex}${columnIndex}`}
+              {...tileProps}
+              onClick={() => {
+                const to: Position = tileProps.position;
+                console.log(to);
+                pieces.forEach((piece) => {
+                  if (
+                    piece.selected &&
+                    piece.movement().find((position) => areEqual(position, to))
+                  ) {
+                    piece.move(to);
+                    setPieces([...pieces]);
+                  }
+                });
+              }}
+            />
           )),
         )}
       </>
@@ -63,10 +80,17 @@ export function Chessboard() {
             key={Index}
             src={piece.image}
             style={{
+              backgroundColor: piece.background(),
               width: `${tileSize}px`,
               position: "absolute",
               top: `${piece.position.y}px`,
               left: `${piece.position.x}px`,
+            }}
+            onClick={() => {
+              pieces.forEach((piece: Chesspiece) => piece.deselect());
+              piece.select();
+              // pieces[Index].move({ x: 100, y: 250 });
+              setPieces([...pieces]);
             }}
           />
         ))}
