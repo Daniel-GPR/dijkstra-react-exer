@@ -31,7 +31,7 @@ export const chessPieceMap = (team: Team, position: [number, number]) => {
     },
     [ChessPiece.Piece]: {
       icon: <Piece team={team} />,
-      movements: [[]],
+      movements: [],
     },
     [ChessPiece.Bishop]: {
       icon: <Bishop team={team} />,

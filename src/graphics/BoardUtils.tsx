@@ -6,6 +6,7 @@ import { TileProps } from "./Tile";
 
 export function initializeBoard(chessboard: TileProps[][], boardSize: number) {
   for (let i = 0; i < boardSize; i++) {
+    
     chessboard.push([]);
     for (let b = 0; b < boardSize; b++) {
       if ((i + b) % 2 === 0) {
@@ -14,7 +15,7 @@ export function initializeBoard(chessboard: TileProps[][], boardSize: number) {
           contents: null,
           position: [b, i],
           size: `${100 / boardSize}%`,
-          highlight: null,
+          highlight: false,
         };
       } else {
         chessboard[i][b] = {
@@ -22,7 +23,7 @@ export function initializeBoard(chessboard: TileProps[][], boardSize: number) {
           contents: null,
           position: [b, i],
           size: `${100 / boardSize}%`,
-          highlight: null,
+          highlight: false,
         };
       }
     }
@@ -79,10 +80,6 @@ export function initializePieces(chessboard: TileProps[][]) {
   return chessboard;
 }
 
-export function highlightTile(  )
-
-export function pieceProps(  ){
-
-
-  return 
+export function pieceMovements(piece: ChessPiece, team: Team) {
+  return;
 }

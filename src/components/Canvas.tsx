@@ -2,7 +2,6 @@ import { style } from "typestyle";
 import { StandardColors } from "../styles";
 import { use, useEffect, useState } from "react";
 import { Button, Input } from "reactstrap";
-import useMousePosition from "../hooks/UseMousePosition";
 import { useMousePositionClick } from "../hooks/UseMousePosition";
 import { styles } from "../styles/Styles";
 import {
@@ -19,7 +18,6 @@ import { chessPieceMap } from "../resources/ChessPieceMap";
 import { Team } from "../models/Team";
 
 export function Canvas() {
-
   return (
     <div className={styles.container}>
       <div className={styles.chessBoardContainer}>

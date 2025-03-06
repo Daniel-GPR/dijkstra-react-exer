@@ -2,6 +2,7 @@ import { Children, useEffect, useState } from "react";
 import { Tile } from "../graphics/Tile";
 import { StandardColors } from "../styles";
 import { TileProps } from "../graphics/Tile";
+import { Chessboard } from "../graphics/Chessboard";
 
 export const useMousePosition = () => {
   const [mousePosition, setMousePosition] = useState<[number, number]>([0, 0]);
@@ -52,21 +53,26 @@ export function getSurroundingDiv(x: number, y: number): HTMLDivElement | null {
   return parentDiv;
 }
 
-export function mouseTrack() {
-  document.addEventListener("click", (ev) => {
-    const target = (ev.target as HTMLElement).closest("div[data-piece]");
+// export function movePiece(chessboard: TileProps[][]) {
+//   document.addEventListener("click", (ev) => {
+//     const target = (ev.target as HTMLElement).closest("div[data-piece]");
 
-    if (target) {
-      const piece = target.getAttribute("data-piece");
-      const team = target.getAttribute("data-team");
-      const props = target.getAttribute("props");
-      // if ( typeof props === TileProps)
+//     if (target) {
+//       const piece = target.getAttribute("data-piece");
+//       const team = target.getAttribute("data-team");
+//       const X = parseInt(target.getAttribute("data-X") ?? "");
+//       const Y = parseInt(target.getAttribute("data-Y") ?? "");
 
-      if (piece) {
-        console.log(`Clicked on ${piece} from team ${team}`);
-      } else {
-        console.log("Empty Tile");
-      }
-    }
-  });
-}
+//       if (piece) {
+//         console.log(
+//           `Clicked on ${piece} from team ${team}, location X ${X} Y ${Y}`,
+//         );
+//         chessboard[X][Y].color = StandardColors.ColorGreen50;
+//         console.log(chessboard[X][Y].color);
+//       } else {
+//         console.log("Empty Tile");
+//       }
+//     }
+//   });
+//   return chessboard;
+// }
