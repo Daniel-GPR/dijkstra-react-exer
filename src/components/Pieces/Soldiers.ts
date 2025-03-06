@@ -15,6 +15,8 @@ export class Soldier extends Chesspiece {
     }
   }
 
+  attack: boolean = false;
+
   movement() {
     const from: Position = this.position;
 
@@ -24,10 +26,18 @@ export class Soldier extends Chesspiece {
       if (from.y === 300) {
         to.push(addPositions(from, { x: 0, y: -2 * tileSize }));
       }
+      if (this.attack) {
+        to.push(addPositions(from, { x: -tileSize, y: -tileSize }));
+        to.push(addPositions(from, { x: tileSize, y: -tileSize }));
+      }
     } else {
       to.push(addPositions(from, { x: 0, y: tileSize }));
       if (from.y === 50) {
         to.push(addPositions(from, { x: 0, y: 2 * tileSize }));
+      }
+      if (this.attack) {
+        to.push(addPositions(from, { x: -tileSize, y: tileSize }));
+        to.push(addPositions(from, { x: tileSize, y: tileSize }));
       }
     }
     return to;

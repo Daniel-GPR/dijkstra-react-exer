@@ -1,17 +1,12 @@
 import { style } from "typestyle";
 import { Position } from "../models";
-import { Chesspiece, Team } from "./Chesspiece";
-import { Bishop } from "./Pieces/Bishop";
-import { Knight } from "./Pieces/Knight";
-import { Queen } from "./Pieces/Queen";
-import { Rook } from "./Pieces/Rook";
+import { Chesspiece } from "./Chesspiece";
 import { Tile, TileProps } from "./Tile";
-import { Soldier } from "./Pieces/Soldiers";
-import { King } from "./Pieces/King";
 import { Pieces } from "./Pieces";
 import { Button } from "reactstrap";
 import { useState } from "react";
 import { areEqual } from "../utils/PositionUtils";
+import { movePiece, pieceSelect } from "../utils/ChessboardUtils";
 
 export const chessboardSize: number = 400;
 export const tileSize: number = chessboardSize / 8;
@@ -39,6 +34,9 @@ export function Chessboard() {
 
   // PIECES
   const [pieces, setPieces] = useState<Chesspiece[]>(Pieces());
+  const [deadPieces, setDeadPieces] = useState<Chesspiece[]>([]);
+  // let selectedPiece: Chesspiece = pieces[0];
+  let selectedPiece: Chesspiece | null = null;
   console.log(pieces);
   // const styles = {
   //   cannon: style({
@@ -58,17 +56,8 @@ export function Chessboard() {
               key={`${rowIndex}${columnIndex}`}
               {...tileProps}
               onClick={() => {
-                const to: Position = tileProps.position;
-                console.log(to);
-                pieces.forEach((piece) => {
-                  if (
-                    piece.selected &&
-                    piece.movement().find((position) => areEqual(position, to))
-                  ) {
-                    piece.move(to);
-                    setPieces([...pieces]);
-                  }
-                });
+                movePiece(pieces, tileProps);
+                setPieces([...pieces]);
               }}
             />
           )),
@@ -80,36 +69,34 @@ export function Chessboard() {
             key={Index}
             src={piece.image}
             style={{
-              backgroundColor: piece.background(),
+              backgroundColor: piece.background,
               width: `${tileSize}px`,
               position: "absolute",
               top: `${piece.position.y}px`,
               left: `${piece.position.x}px`,
             }}
             onClick={() => {
-              pieces.forEach((piece: Chesspiece) => piece.deselect());
-              piece.select();
-              // pieces[Index].move({ x: 100, y: 250 });
+              pieceSelect(pieces, deadPieces, piece, selectedPiece, Index);
               setPieces([...pieces]);
             }}
           />
         ))}
       </>
-      <Button
+      {/* <Button
         className={styles.button}
         onClick={() => {
           pieces[5].move({ x: 100, y: 250 });
           setPieces([...pieces]);
         }}
-      />
+      /> */}
     </div>
   );
 }
 
-const styles = {
-  button: style({
-    position: "absolute",
-    top: "5%",
-    left: "5%",
-  }),
-};
+// const styles = {
+//   button: style({
+//     position: "absolute",
+//     top: "5%",
+//     left: "5%",
+//   }),
+// };

@@ -15,6 +15,7 @@ export abstract class Chesspiece {
   position: Position;
   image: string | undefined;
   selected: boolean = false;
+  background: string = StandardColors.ColorTransparent;
 
   // to: Position[]
 
@@ -31,16 +32,17 @@ export abstract class Chesspiece {
 
   select(): void {
     this.selected = true;
+    this.setBackground();
   }
 
   deselect(): void {
     this.selected = false;
+    this.setBackground();
   }
 
-  background() {
-    const background: string = this.selected
+  setBackground() {
+    this.background = this.selected
       ? StandardColors.ColorGreen30
       : StandardColors.ColorTransparent;
-    return background;
   }
 }
