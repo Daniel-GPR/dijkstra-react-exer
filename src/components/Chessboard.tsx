@@ -8,7 +8,7 @@ import { useState } from "react";
 import { areEqual } from "../utils/PositionUtils";
 import { movePiece, pieceSelect } from "../utils/ChessboardUtils";
 
-export const chessboardSize: number = 400;
+export const chessboardSize: number = Math.min(window.innerHeight, innerWidth);
 export const tileSize: number = chessboardSize / 8;
 
 export function Chessboard() {

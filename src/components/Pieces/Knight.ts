@@ -61,7 +61,8 @@ export class Knight extends Chesspiece {
       leftUp,
     ];
 
-    console.log(to);
-    return to;
+    const moveStraight: Position[] = [];
+    const moveDiag: Position[] = [];
+    return { to, moveStraight, moveDiag };
   }
 }

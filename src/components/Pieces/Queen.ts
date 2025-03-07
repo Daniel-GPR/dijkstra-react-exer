@@ -22,7 +22,9 @@ export class Queen extends Chesspiece {
     const rightSquares: number = (chessboardSize - from.x) / tileSize - 1;
     const upSquares: number = from.y / tileSize;
     const downSquares: number = (chessboardSize - from.y) / tileSize - 1;
-    const to: Position[] = [];
+    const moveStraight: Position[] = [];
+    const moveDiag: Position[] = [];
+
     // DIAGONAL
     const leftUp = Math.min(leftSquares, upSquares);
     const rightUp = Math.min(rightSquares, upSquares);
@@ -31,39 +33,39 @@ export class Queen extends Chesspiece {
 
     // STRAIGHT
     for (let i = 1; i <= leftSquares; i++) {
-      to.push(addPositions(from, { x: -i * tileSize, y: 0 }));
+      moveStraight.push(addPositions(from, { x: -i * tileSize, y: 0 }));
     }
 
     for (let i = 1; i <= rightSquares; i++) {
-      to.push(addPositions(from, { x: i * tileSize, y: 0 }));
+      moveStraight.push(addPositions(from, { x: i * tileSize, y: 0 }));
     }
 
     for (let i = 1; i <= upSquares; i++) {
-      to.push(addPositions(from, { x: 0, y: -i * tileSize }));
+      moveStraight.push(addPositions(from, { x: 0, y: -i * tileSize }));
     }
 
     for (let i = 1; i <= downSquares; i++) {
-      to.push(addPositions(from, { x: 0, y: i * tileSize }));
+      moveStraight.push(addPositions(from, { x: 0, y: i * tileSize }));
     }
 
     // DIAGONAL
     for (let i = 1; i <= leftUp; i++) {
-      to.push(addPositions(from, { x: -i * tileSize, y: -i * tileSize }));
+      moveDiag.push(addPositions(from, { x: -i * tileSize, y: -i * tileSize }));
     }
 
     for (let i = 1; i <= rightUp; i++) {
-      to.push(addPositions(from, { x: i * tileSize, y: -i * tileSize }));
+      moveDiag.push(addPositions(from, { x: i * tileSize, y: -i * tileSize }));
     }
 
     for (let i = 1; i <= leftDown; i++) {
-      to.push(addPositions(from, { x: -i * tileSize, y: i * tileSize }));
+      moveDiag.push(addPositions(from, { x: -i * tileSize, y: i * tileSize }));
     }
 
     for (let i = 1; i <= rightDown; i++) {
-      to.push(addPositions(from, { x: i * tileSize, y: i * tileSize }));
+      moveDiag.push(addPositions(from, { x: i * tileSize, y: i * tileSize }));
     }
+    const to: Position[] = [...moveStraight, ...moveDiag];
 
-    console.log(to);
-    return to;
+    return { to, moveStraight, moveDiag };
   }
 }

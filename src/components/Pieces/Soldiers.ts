@@ -15,31 +15,38 @@ export class Soldier extends Chesspiece {
     }
   }
 
-  attack: boolean = false;
-
   movement() {
     const from: Position = this.position;
 
     const to: Position[] = [];
     if (this.team === "White") {
       to.push(addPositions(from, { x: 0, y: -tileSize }));
-      if (from.y === 300) {
+      if (from.y === 6 * tileSize) {
         to.push(addPositions(from, { x: 0, y: -2 * tileSize }));
-      }
-      if (this.attack) {
-        to.push(addPositions(from, { x: -tileSize, y: -tileSize }));
-        to.push(addPositions(from, { x: tileSize, y: -tileSize }));
       }
     } else {
       to.push(addPositions(from, { x: 0, y: tileSize }));
-      if (from.y === 50) {
+      if (from.y === tileSize) {
         to.push(addPositions(from, { x: 0, y: 2 * tileSize }));
       }
-      if (this.attack) {
-        to.push(addPositions(from, { x: -tileSize, y: tileSize }));
-        to.push(addPositions(from, { x: tileSize, y: tileSize }));
-      }
     }
+
+    const moveStraight = to;
+    const moveDiag: Position[] = [];
+    return { to, moveStraight, moveDiag };
+  }
+
+  attackMovement() {
+    const from: Position = this.position;
+    const to: Position[] = [];
+    if (this.team === "White") {
+      to.push(addPositions(from, { x: -tileSize, y: -tileSize }));
+      to.push(addPositions(from, { x: tileSize, y: -tileSize }));
+    } else {
+      to.push(addPositions(from, { x: -tileSize, y: tileSize }));
+      to.push(addPositions(from, { x: tileSize, y: tileSize }));
+    }
+
     return to;
   }
 }

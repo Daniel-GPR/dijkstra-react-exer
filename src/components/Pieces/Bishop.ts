@@ -41,8 +41,8 @@ export class Bishop extends Chesspiece {
     for (let i = 1; i <= rightDown; i++) {
       to.push(addPositions(from, { x: i * tileSize, y: i * tileSize }));
     }
-
-    console.log(to);
-    return to;
+    const moveStraight: Position[] = [];
+    const moveDiag = to;
+    return { to, moveStraight, moveDiag };
   }
 }

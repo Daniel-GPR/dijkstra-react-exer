@@ -14,6 +14,7 @@ export class King extends Chesspiece {
       this.image = blackKing;
     }
   }
+
   movement() {
     const from: Position = this.position;
 
@@ -23,7 +24,8 @@ export class King extends Chesspiece {
     const down: Position = addPositions(from, { x: 0, y: +tileSize });
 
     const to: Position[] = [left, right, up, down];
-
-    return to;
+    const moveStraight = to;
+    const moveDiag: Position[] = [];
+    return { to, moveStraight, moveDiag };
   }
 }

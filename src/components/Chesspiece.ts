@@ -24,11 +24,18 @@ export abstract class Chesspiece {
     this.position = props.position;
   }
 
+  moved: boolean = false;
+
   move(to: Position) {
+    this.moved = true;
     this.position = to;
   }
 
-  abstract movement(): Position[];
+  abstract movement(): {
+    to: Position[];
+    moveStraight: Position[];
+    moveDiag: Position[];
+  };
 
   select(): void {
     this.selected = true;

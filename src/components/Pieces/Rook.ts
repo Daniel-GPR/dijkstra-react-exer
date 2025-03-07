@@ -14,6 +14,7 @@ export class Rook extends Chesspiece {
       this.image = blackRook;
     }
   }
+
   movement() {
     const from: Position = this.position;
     // STRAIGHT
@@ -39,8 +40,8 @@ export class Rook extends Chesspiece {
     for (let i = 1; i <= downSquares; i++) {
       to.push(addPositions(from, { x: 0, y: i * tileSize }));
     }
-
-    console.log(to);
-    return to;
+    const moveStraight = to;
+    const moveDiag: Position[] = [];
+    return { to, moveStraight, moveDiag };
   }
 }
