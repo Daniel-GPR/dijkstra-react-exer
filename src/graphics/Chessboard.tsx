@@ -23,8 +23,13 @@ export function Chessboard() {
   }, []);
 
   const [selected, setSelected] = useState<
-    [boolean, TileContent | null, [number, number]]
-  >([false, null, [100, 100]]);
+    [
+      boolean,
+      TileContent | null,
+      [number, number],
+      [number, number][] | undefined,
+    ]
+  >([false, null, [100, 100], []]);
 
   return chessboard.map((row: TileProps[], rowInd) =>
     row.map((tile: TileProps, colInd) => (
@@ -36,25 +41,40 @@ export function Chessboard() {
             row.forEach((tile) => (tile.highlight = false)),
           );
 
-          if (chessboard[pos[1]][pos[0]].contents) {
-            setSelected([true, chessboard[pos[1]][pos[0]].contents, pos]);
-            const posMovArr = allowedMoves(chessboard,
+          if (chessboard[pos[1]][pos[0]].contents && selected[0] != true) {
+            const posMovArr = allowedMoves(
+              chessboard,
               chessboard[pos[1]][pos[0]].contents,
               pos,
             );
             posMovArr?.forEach(
-              (posMov) => (chessboard[posMov[0]][posMov[1]].highlight = true),
+              (posMov) => (chessboard[posMov[1]][posMov[0]].highlight = true),
             );
+            setSelected([
+              true,
+              chessboard[pos[1]][pos[0]].contents,
+              pos,
+              posMovArr,
+            ]);
           }
 
-          if (selected[0] && selected[2]) {
-            chessboard[pos[1]][pos[0]].contents = selected[1];
-            chessboard[selected[2][1]][selected[2][0]].contents = null;
-
-            setSelected([false, null, [100, 100]]);
-            setChessboard([...chessboard]);
+          if (selected[0]) {
+            if (
+              selected[3]?.some((posMov) =>
+                posMov.every((value, index) => value === pos[index]),
+              )
+            ) {
+              const piece = selected[1];
+              if (piece) {
+                piece.hassMoved = true;
+              }
+              chessboard[pos[1]][pos[0]].contents = piece;
+              chessboard[selected[2][1]][selected[2][0]].contents = null;
+            }
+            setSelected([false, null, [100, 100], undefined]);
           }
-          chessboard[pos[1]][pos[0]].highlight = true;
+
+          // chessboard[pos[1]][pos[0]].highlight = true;
           setChessboard([...chessboard]);
         }}
       />

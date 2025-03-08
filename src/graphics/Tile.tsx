@@ -19,15 +19,17 @@ export interface TileProps {
 export interface TileContent {
   team: Team;
   pieceType: ChessPiece;
+  hassMoved?: boolean;
 }
 
 export function Tile(props: TileProps) {
-
   return (
     <div
       className={style({
         position: "absolute",
-        backgroundColor: props.highlight ? StandardColors.ColorGreen40 : props.color,
+        backgroundColor: props.highlight
+          ? StandardColors.ColorGreen40
+          : props.color,
 
         left: `${(props.position[0] / 8) * 100}%`,
         top: `${(props.position[1] / 8) * 100}%`,
@@ -39,9 +41,7 @@ export function Tile(props: TileProps) {
       }}
     >
       {props.contents &&
-        chessPieceMap(props.contents.team, props.position)[
-          props.contents.pieceType
-        ].icon}
+        chessPieceMap(props.contents.team)[props.contents.pieceType].icon}
     </div>
   );
 }

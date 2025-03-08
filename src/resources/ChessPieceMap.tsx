@@ -9,33 +9,25 @@ import {
 import { ChessPiece } from "../models/ChessPiece";
 import { Team } from "../models/Team";
 
-export const chessPieceMap = (team: Team, position: [number, number]) => {
-  let x = position[0];
-  let y = position[1];
+export const chessPieceMap = (team: Team) => {
   return {
     [ChessPiece.King]: {
       icon: <King team={team} />,
-      movements: [[x - 1, y - 1]],
     },
     [ChessPiece.Queen]: {
       icon: <Queen team={team} />,
-      movements: [[]],
     },
     [ChessPiece.Knight]: {
       icon: <Knight team={team} />,
-      movements: [[]],
     },
     [ChessPiece.Tower]: {
       icon: <Tower team={team} />,
-      movements: [[]],
     },
     [ChessPiece.Piece]: {
       icon: <Piece team={team} />,
-      movements: [],
     },
     [ChessPiece.Bishop]: {
       icon: <Bishop team={team} />,
-      movements: [[]],
     },
   };
 };
