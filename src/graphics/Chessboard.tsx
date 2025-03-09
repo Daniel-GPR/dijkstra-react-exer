@@ -47,7 +47,7 @@ export function Chessboard() {
               chessboard[pos[1]][pos[0]].contents,
               pos,
             );
-            posMovArr?.forEach(
+            posMovArr?.map(
               (posMov) => (chessboard[posMov[1]][posMov[0]].highlight = true),
             );
             setSelected([
