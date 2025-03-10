@@ -166,7 +166,6 @@ export function pieceSelect(
     } else {
       pieces.forEach((piece: Chesspiece) => piece.deselect());
       piece.select();
-      console.log("check", piece);
     }
   } else {
     if (checkAttack(pieces, selectedPiece, piece.position)) {

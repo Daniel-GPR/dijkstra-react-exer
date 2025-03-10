@@ -37,7 +37,6 @@ export function Chessboard() {
   const [deadPieces, setDeadPieces] = useState<Chesspiece[]>([]);
   // let selectedPiece: Chesspiece = pieces[0];
   let selectedPiece: Chesspiece | null = null;
-  console.log(pieces);
   // const styles = {
   //   cannon: style({
   //     width: `${tileSize}px`,
@@ -76,6 +75,18 @@ export function Chessboard() {
               left: `${piece.position.x}px`,
             }}
             onClick={() => {
+              piece.movement().to.map((tile, Index) => (
+                <Tile
+                  key={Index}
+                  {...{
+                    position: tile,
+                    size: tileSize,
+                    dark: false,
+                    highlight: true,
+                    zIndex: 100 + Index,
+                  }}
+                />
+              ));
               pieceSelect(pieces, deadPieces, piece, selectedPiece, Index);
               setPieces([...pieces]);
             }}
