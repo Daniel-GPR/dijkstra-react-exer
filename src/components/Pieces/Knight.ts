@@ -65,7 +65,7 @@ export class Knight extends Chesspiece {
     for (let i in pos) {
       if (
         pos[i].x >= 0 &&
-        pos[i].y <= 7 * tileSize &&
+        pos[i].x < 7 * tileSize &&
         pos[i].y >= 0 &&
         pos[i].y <= 7 * tileSize
       )

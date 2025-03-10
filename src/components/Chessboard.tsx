@@ -6,7 +6,7 @@ import { Pieces } from "./Pieces";
 import { Button } from "reactstrap";
 import { useState } from "react";
 import { areEqual } from "../utils/PositionUtils";
-import { movePiece, pieceSelect } from "../utils/ChessboardUtils";
+import { checkMove, movePiece, pieceSelect } from "../utils/ChessboardUtils";
 
 export const chessboardSize: number = Math.min(window.innerHeight, innerWidth);
 export const tileSize: number = chessboardSize / 8;
@@ -78,12 +78,15 @@ export function Chessboard() {
             }}
             onClick={() => {
               piece.movement().to.map((tile, Index) => {
-                boardProps[tile.y / tileSize][tile.x / tileSize] = {
-                  position: tile,
-                  size: tileSize,
-                  dark: false,
-                  highlight: true,
-                };
+                if (checkMove(pieces, piece, tile)) {
+                  console.log(tile.x, 7 * tileSize);
+                  boardProps[tile.y / tileSize][tile.x / tileSize] = {
+                    position: tile,
+                    size: tileSize,
+                    dark: false,
+                    highlight: true,
+                  };
+                }
               });
               setTileProps(boardProps);
               pieceSelect(pieces, deadPieces, piece, selectedPiece, Index);
