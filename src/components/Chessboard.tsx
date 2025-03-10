@@ -31,6 +31,7 @@ export function Chessboard() {
     }
     tilePosY += tileSize;
   }
+  const [tileProps, setTileProps] = useState<TileProps[][]>(boardProps);
 
   // PIECES
   const [pieces, setPieces] = useState<Chesspiece[]>(Pieces());
@@ -49,7 +50,7 @@ export function Chessboard() {
   return (
     <div>
       <>
-        {boardProps.map((row, rowIndex) =>
+        {tileProps.map((row, rowIndex) =>
           row.map((tileProps, columnIndex) => (
             <Tile
               key={`${rowIndex}${columnIndex}`}
@@ -73,20 +74,18 @@ export function Chessboard() {
               position: "absolute",
               top: `${piece.position.y}px`,
               left: `${piece.position.x}px`,
+              zIndex: 100,
             }}
             onClick={() => {
-              piece.movement().to.map((tile, Index) => (
-                <Tile
-                  key={Index}
-                  {...{
-                    position: tile,
-                    size: tileSize,
-                    dark: false,
-                    highlight: true,
-                    zIndex: 100 + Index,
-                  }}
-                />
-              ));
+              piece.movement().to.map((tile, Index) => {
+                boardProps[tile.y / tileSize][tile.x / tileSize] = {
+                  position: tile,
+                  size: tileSize,
+                  dark: false,
+                  highlight: true,
+                };
+              });
+              setTileProps(boardProps);
               pieceSelect(pieces, deadPieces, piece, selectedPiece, Index);
               setPieces([...pieces]);
             }}

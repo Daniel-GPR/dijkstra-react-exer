@@ -8,7 +8,6 @@ export interface TileProps {
   dark: boolean;
   highlight?: boolean;
   onClick?: () => void;
-  zIndex?: number;
 }
 export function Tile(props: TileProps) {
   let color: string = props.dark
@@ -16,7 +15,6 @@ export function Tile(props: TileProps) {
     : StandardColors.ColorDarkGray05;
 
   if (props.highlight) {
-    console.log("juucbhkc");
     color = StandardColors.ColorOrange30;
   }
 
@@ -28,7 +26,6 @@ export function Tile(props: TileProps) {
       position: "absolute",
       top: props.position.y,
       left: props.position.x,
-      zIndex: props.zIndex,
     }),
   };
   return <div className={styles.tile} onClick={props.onClick} />;

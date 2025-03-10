@@ -50,7 +50,7 @@ export class Knight extends Chesspiece {
       y: -tileSize,
     });
 
-    const to: Position[] = [
+    const pos: Position[] = [
       upLeft,
       upRight,
       rightUp,
@@ -60,6 +60,17 @@ export class Knight extends Chesspiece {
       leftDown,
       leftUp,
     ];
+
+    const to: Position[] = [];
+    for (let i in pos) {
+      if (
+        pos[i].x >= 0 &&
+        pos[i].y <= 7 * tileSize &&
+        pos[i].y >= 0 &&
+        pos[i].y <= 7 * tileSize
+      )
+        to.push(pos[i]);
+    }
 
     const moveStraight: Position[] = [];
     const moveDiag: Position[] = [];
