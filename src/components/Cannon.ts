@@ -64,8 +64,6 @@ export class Cannon {
     });
   }
 
-  setRandColor(): void {}
-
   createCannonball(cannon?: CannonballProps): void {
     if (cannon) {
       this.cannonballs.push({ ...cannon });

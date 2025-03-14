@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Vector } from "../models";
 import { Button, Input } from "reactstrap";
 import useMousePosition from "../hooks/UseMousePosition";
-import cannon from "./cannon.svg";
+import cannon from "../graphics/cannon.svg";
 import { Cannon, defaultCannonball } from "./Cannon";
 
 export function Canvas() {
@@ -116,7 +116,6 @@ export function Canvas() {
           transform: `rotate(${angle}rad)`,
         }}
       />
-      {/* <h1>img src={cannon}</h1> */}
       <>
         {useMousePosition().x},{useMousePosition().y}
       </>
