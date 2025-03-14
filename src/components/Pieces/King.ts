@@ -2,8 +2,8 @@ import { Position } from "../../models";
 import { addPositions } from "../../utils/PositionUtils";
 import { tileSize } from "../Chessboard";
 import { Chesspiece, ChesspieceProps, Team } from "../Chesspiece";
-import whiteKing from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/wk.png";
-import blackKing from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/bk.png";
+import whiteKing from "../../graphics/wk.png";
+import blackKing from "../../graphics/bk.png";
 
 export class King extends Chesspiece {
   constructor(props: ChesspieceProps) {

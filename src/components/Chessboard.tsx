@@ -1,11 +1,8 @@
-import { style } from "typestyle";
 import { Position } from "../models";
 import { Chesspiece } from "./Chesspiece";
 import { Tile, TileProps } from "./Tile";
 import { Pieces } from "./Pieces";
-import { Button } from "reactstrap";
 import { useState } from "react";
-import { areEqual } from "../utils/PositionUtils";
 import { checkMove, movePiece, pieceSelect } from "../utils/ChessboardUtils";
 
 export const chessboardSize: number = Math.min(window.innerHeight, innerWidth);
@@ -95,13 +92,6 @@ export function Chessboard() {
           />
         ))}
       </>
-      {/* <Button
-        className={styles.button}
-        onClick={() => {
-          pieces[5].move({ x: 100, y: 250 });
-          setPieces([...pieces]);
-        }}
-      /> */}
     </div>
   );
 }

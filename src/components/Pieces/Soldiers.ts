@@ -2,8 +2,8 @@ import { Position } from "../../models";
 import { addPositions, areEqual } from "../../utils/PositionUtils";
 import { tileSize } from "../Chessboard";
 import { Chesspiece, ChesspieceProps, Team } from "../Chesspiece";
-import whiteSoldier from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/wp.png";
-import blackSoldier from "S:/Git/Saligaryan/dijkstra-react-exer/src/graphics/bp.png";
+import whiteSoldier from "../../graphics/wp.png";
+import blackSoldier from "../../graphics/bp.png";
 
 export class Soldier extends Chesspiece {
   constructor(props: ChesspieceProps) {
