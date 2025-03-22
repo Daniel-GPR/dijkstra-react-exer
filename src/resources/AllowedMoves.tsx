@@ -4,6 +4,7 @@ import { Team } from "../models/Team";
 import { pieceRules } from "./AllowedPieceMoves";
 import { bishopRules } from "./bishopRules";
 import { kingRules } from "./kingRules";
+import { knightRules } from "./knightRules";
 import { towerRules } from "./towerRules";
 
 export function allowedMoves(
@@ -52,7 +53,7 @@ export function allowedMoves(
     } else if (piece === ChessPiece.Tower) {
       posMov = towerRules(...input, posMov);
     } else if (piece === ChessPiece.Knight) {
-      posMov = bishopRules(...input, posMov);
+      posMov = knightRules(...input, posMov);
     } else if (piece === ChessPiece.Bishop) {
       posMov = bishopRules(...input, posMov);
     } else if (piece === ChessPiece.Queen) {

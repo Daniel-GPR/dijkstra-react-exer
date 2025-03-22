@@ -6,6 +6,7 @@ import { Team } from "../models/Team";
 import { StandardColors } from "../styles";
 import { useState } from "react";
 import { pieceMovements } from "./BoardUtils";
+import { styles } from "../styles/Styles";
 
 export interface TileProps {
   color: string;
@@ -13,6 +14,7 @@ export interface TileProps {
   position: [number, number];
   size: string;
   highlight: boolean;
+  enemHighlight: boolean;
   onClick?: (position: [number, number]) => void;
 }
 
@@ -28,7 +30,9 @@ export function Tile(props: TileProps) {
       className={style({
         position: "absolute",
         backgroundColor: props.highlight
-          ? StandardColors.ColorGreen40
+          ? props.enemHighlight
+            ? StandardColors.ColorRed40
+            : StandardColors.ColorGreen40
           : props.color,
 
         left: `${(props.position[0] / 8) * 100}%`,
@@ -42,6 +46,9 @@ export function Tile(props: TileProps) {
     >
       {props.contents &&
         chessPieceMap(props.contents.team)[props.contents.pieceType].icon}
+      {props.highlight && !props.enemHighlight && (
+        <div className={styles.Dot}>o</div>
+      )}
     </div>
   );
 }

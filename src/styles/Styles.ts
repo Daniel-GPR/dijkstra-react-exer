@@ -62,4 +62,11 @@ export const styles = {
     display: "flex",
     flexDirection: "column",
   }),
+  Dot: style({
+    position: "absolute",
+    top: "20%",
+    left: "38%",
+    fontSize: 40,
+    color: `${StandardColors.ColorBlack} !important`,
+  }),
 };

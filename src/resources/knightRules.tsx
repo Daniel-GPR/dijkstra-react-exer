@@ -1,6 +1,6 @@
 import { Team } from "../models/Team";
 
-export function kingRules(
+export function knightRules(
   X: number,
   Y: number,
   hassMoved: boolean | undefined,
@@ -11,14 +11,14 @@ export function kingRules(
   posMov: [number, number][],
 ) {
   const aroundCoords: [number, number][] = [
-    [X - 1, Y],
-    [X - 1, Y - 1],
-    [X - 1, Y + 1],
-    [X, Y + 1],
-    [X, Y - 1],
-    [X + 1, Y],
-    [X + 1, Y - 1],
-    [X + 1, Y + 1],
+    [X - 1, Y - 2],
+    [X - 1, Y + 2],
+    [X - 2, Y - 1],
+    [X - 2, Y - 1],
+    [X + 1, Y + 2],
+    [X + 1, Y - 2],
+    [X + 2, Y - 1],
+    [X + 2, Y + 1],
   ];
 
   aroundCoords.map((posOne) =>
